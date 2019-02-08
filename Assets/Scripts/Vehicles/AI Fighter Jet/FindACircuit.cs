@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-using UnityStandardAssets.Utility;
-
 namespace AIFighterJet
 {
 // This script finds a random circuit and assigns it to the WaypointProgressTracker that Unity has made. The AI Jet
