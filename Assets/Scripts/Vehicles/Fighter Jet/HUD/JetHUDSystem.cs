@@ -10,139 +10,186 @@ using UnityEditor;
 #endif
 namespace Vehicle
 {
-    namespace FighterJet
-    {
-        public class JetHUDSystem : MonoBehaviour
-        {
-            private Camera playerCamera;
-            public Behaviour[] HUDComponents;
-            public MeshRenderer[] pitchLadderRenderers;
+	namespace FighterJet
+	{
+		public class JetHUDSystem : MonoBehaviour
+		{
+			public Color HUDColour, warningColour;
+			public static JetHUDSystem instance;
+			private Rigidbody rb;
 
-            private float maxDistance = Mathf.Infinity;
+			[Header("Pitch Ladder Settings")]
+			public GameObject pitchLadder;
+			private Renderer pitchLadderRenderer;
+			public float pitchLadderSensitivity;
+			private float pitchLadderOffset;
+			private float pitch;
 
-            [SerializeField]
-            private Color HUDColour;
-            [SerializeField]
-            private Color warningColour;
+			[Header("Heading Settings")]
+			public GameObject heading;
+			private float headingDirection;
+			private Renderer headingRenderer;
+			public float headingSensitivity;
+			private float headingOffset;
 
-            private Vector3 originalScale;
-            private Vector3 tempPos;
+			[Header("Altitude Settings")]
+			public GameObject altitude;
+			private Renderer altitudeRenderer;
+			public float altitudeSensitivity;
+			private float altitudeOffset;
 
-            public static JetHUDSystem instance;
+			[Header("Central Target Settings")]
+			public GameObject centralTarget;
 
-            void Awake()
-            {
-                if (instance)
-                {
-                    DestroyImmediate(gameObject);
-                }
-                else
-                {
-                    instance = this;
-                }
-            }
+			[Space()]
+			public Component[] HUDComponents;
 
-            void Start()
-            {
-                playerCamera = Camera.main;
-                originalScale = transform.localScale;
-                ColourHUD(HUDColour);
-            }
+			private void Awake()
+			{
+				instance = this;
+			}
 
-            void Update()
-            {
-                SetHUDDepth();
-            }
 
-            void SetHUDDepth()
-            {
-                float distance = GazeRaycaster.GetRaycastHitDistance(maxDistance);
+			private void Start()
+			{
+				rb = GetComponent<Rigidbody>();
+				pitchLadderRenderer = pitchLadder.GetComponent<Renderer>();
+				altitudeRenderer = altitude.GetComponent<Renderer>();
+				headingRenderer = heading.GetComponent<Renderer>();
 
-                // Set the new crosshair position - which is the current position multiplied by the distance of the object we hit
-                tempPos.x = transform.position.x;
-                tempPos.y = transform.position.y;
-                tempPos.z = distance;
+				ColourHUD(HUDColour);
+			}
 
-                //transform.position = tempPos;
-                transform.position = playerCamera.transform.position + (playerCamera.transform.forward * distance);
-                //transform.LookAt(playerCamera.transform.position);
 
-                // Set the scale to the original scale multiplied by the distance of the object we hit
-                transform.localScale = originalScale * distance;
-            }
+			private void Update()
+			{
+				Vector3 pos = ProjectPointOnPlane(Vector3.up, Vector3.zero, transform.forward);
 
-            /// <summary>
-            /// Updates the UI Text to the Message supplied.
-            /// </summary>
-            public void UpdateText(Text text, string message)
-            {
-                text.text = message;
-            }
+				// Pitch
+				pitch = SignedAngle(transform.forward, pos, transform.right);
+				pitchLadderOffset = pitch * (pitchLadderSensitivity / 10);	
+				pitchLadderRenderer.material.SetTextureOffset("_MainTex", new Vector2(0f, pitchLadderOffset));
 
-            public IEnumerator AnimateText(Text t, string msg)
-            {
-                int i = 0;
-                //t.text = "";
-                while (i < msg.Length)
-                {
-                    t.text += msg[i++]; 
-                    yield return new WaitForSeconds(.00005f);
-                }
+				// Altitude
+				altitudeOffset = transform.position.y * (altitudeSensitivity / 10);
+				altitudeRenderer.material.SetTextureOffset("_MainTex", new Vector2(0f, altitudeOffset));
 
-                yield return new WaitForSeconds(.5f);
-            }
+				// Heading
+				headingDirection = Mathf.Atan2(transform.forward.z, transform.forward.x) * Mathf.Rad2Deg;
+				headingOffset = headingDirection * (headingSensitivity / 10);
+				headingRenderer.material.SetTextureOffset("_MainTex", new Vector2(0f, headingOffset));
 
-            public void ResetHUDColour()
-            {
-                ColourHUD(HUDColour);
-            }
+				// Ladders
+				pitchLadder.transform.localRotation = AlignWithHorizon();
+				centralTarget.transform.localRotation = AlignWithHorizon();			
+			}
 
-            public void WarningHUDColour()
-            {
-                ColourHUD(warningColour);
-            }
 
-            void ColourHUD(Color colour)
-            {
-                for (int i = 0; i < HUDComponents.Length; i++)
-                {
-                    Behaviour b = HUDComponents[i];
+			private void OnGUI()
+			{
+				GUI.Label(new Rect(20, 0, 200, 40), "Heading: "+headingDirection.ToString());
+				GUI.Label(new Rect(20, 20, 200, 40), "Pitch: "+pitch.ToString());
+			}
 
-                    if (b.GetComponent<Image>())
-                        b.GetComponent<Image>().color = colour;
-                    if (b.GetComponent<Text>())
-                        b.GetComponent<Text>().color = colour;
-                    if (b.GetComponent<Material>())
-                        b.GetComponent<Material>().color = colour;
-                }
 
-                pitchLadderRenderers[0].sharedMaterial.color = colour;
-                pitchLadderRenderers[1].sharedMaterial.color = colour;
-            }
-        }
-    }
+			private Vector3 ProjectPointOnPlane(Vector3 planeNormal, Vector3 planePoint, Vector3 point)
+			{
+				planeNormal.Normalize();
+				float distance = -Vector3.Dot(planeNormal.normalized, (point - planePoint));
+				return point + planeNormal * distance;
+			}
+
+
+			private float SignedAngle(Vector3 v1, Vector3 v2, Vector3 normal)
+			{
+				Vector3 perp = Vector3.Cross(normal, v1);
+				float angle = Vector3.Angle(v1, v2);
+				angle *= Mathf.Sign(Vector3.Dot(perp, v2));
+				return angle;
+			}
+
+
+			private Quaternion AlignWithHorizon()
+			{
+				return Quaternion.Euler(transform.localEulerAngles.z + 90f, 0, 90);
+			}
+
+
+			public void ChangeColourNormal()
+			{
+				ColourHUD(HUDColour);
+			}
+
+
+			public void ChangeColourWarning()
+			{
+				ColourHUD(warningColour);
+			}
+
+
+			/// <summary>
+			/// Updates the UI Text to the Message supplied.
+			/// </summary>
+			public void UpdateText(Text text, string message)
+			{
+				text.text = message;
+			}
+
+
+			public IEnumerator AnimateText(Text t, string msg)
+			{
+				int i = 0;
+				//t.text = "";
+				while (i < msg.Length)
+				{
+					t.text += msg[i++];
+					yield return new WaitForSeconds(.00005f);
+				}
+
+				yield return new WaitForSeconds(.5f);
+			}
+
+
+			private void ColourHUD(Color colour)
+			{
+				for (int i = 0; i < HUDComponents.Length; i++)
+				{
+					Component c = HUDComponents[i];
+
+					if (c.GetComponent<Image>())
+						c.GetComponent<Image>().material.color = colour;
+
+					if (c.GetComponent<Text>())
+						c.GetComponent<Text>().material.color = colour;
+
+					if (c.GetComponent<Renderer>())
+						c.GetComponent<Renderer>().sharedMaterial.color = colour;
+				}
+			}
+		}
+	}
 }
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(JetHUDSystem))]
 public class HUDEditor : Editor
 {
-    JetHUDSystem hud = null;
+	JetHUDSystem hud = null;
 
-    void OnEnable()
-    {
-        hud = (JetHUDSystem)target;
-    }
+	void OnEnable()
+	{
+		hud = (JetHUDSystem)target;
+	}
 
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
+	public override void OnInspectorGUI()
+	{
+		DrawDefaultInspector();
 
-        if (GUILayout.Button("Colour HUD"))
-        {
-            hud.ResetHUDColour();
-        }
-    }
+		if (GUILayout.Button("Colour HUD"))
+		{
+			hud.ChangeColourNormal();
+		}
+	}
 }
 #endif
 

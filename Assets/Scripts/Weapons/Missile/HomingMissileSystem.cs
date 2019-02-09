@@ -52,7 +52,7 @@ public class HomingMissileSystem : MonoBehaviour
 		if (target == fighterJet) 
 		{
             JetHUDSystem.instance.UpdateText (jetCounterMeasuresSystem.lockWarningText, "WARN");
-            JetHUDSystem.instance.WarningHUDColour();
+            JetHUDSystem.instance.ChangeColourNormal();
 
             if (!AudioManager.instance.GetSound("Cockpit Warning Lock").source.isPlaying)
                 AudioManager.instance.Play("Cockpit Warning Lock");
@@ -142,7 +142,7 @@ public class HomingMissileSystem : MonoBehaviour
         if (target == fighterJet)
         {
             AudioManager.instance.Pause("Cockpit Warning Lock");
-            JetHUDSystem.instance.ResetHUDColour();
+            JetHUDSystem.instance.ChangeColourWarning();
             JetHUDSystem.instance.UpdateText (jetCounterMeasuresSystem.lockWarningText, "");
         }
         
