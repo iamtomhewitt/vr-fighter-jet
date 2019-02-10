@@ -27,19 +27,26 @@ namespace Vehicle
 
 			[Header("Heading Settings")]
 			public GameObject heading;
-			private float headingDirection;
+			public Text headingText;
 			private Renderer headingRenderer;
 			public float headingSensitivity;
+			private float headingDirection;
 			private float headingOffset;
 
 			[Header("Altitude Settings")]
 			public GameObject altitude;
 			private Renderer altitudeRenderer;
+			public Text altitudeText;
 			public float altitudeSensitivity;
 			private float altitudeOffset;
 
-			[Header("Central Target Settings")]
+			[Space()]
 			public GameObject centralTarget;
+			public Text flaresText;
+			public Text targetInformationText;
+			public Text targetDistanceText;
+			public Text healthText;
+			public Text takeoffText;
 
 			[Space()]
 			public Component[] HUDComponents;
@@ -73,11 +80,13 @@ namespace Vehicle
 				// Altitude
 				altitudeOffset = transform.position.y * (altitudeSensitivity / 10);
 				altitudeRenderer.material.SetTextureOffset("_MainTex", new Vector2(0f, altitudeOffset));
+				altitudeText.text = transform.position.y.ToString("00000");
 
 				// Heading
 				headingDirection = Mathf.Atan2(transform.forward.z, transform.forward.x) * Mathf.Rad2Deg;
 				headingOffset = headingDirection * (headingSensitivity / 10);
-				headingRenderer.material.SetTextureOffset("_MainTex", new Vector2(0f, headingOffset));
+				headingRenderer.material.SetTextureOffset("_MainTex", new Vector2(headingOffset, 0f));
+				headingText.text = headingDirection.ToString("000");
 
 				// Ladders
 				pitchLadder.transform.localRotation = AlignWithHorizon();
@@ -127,13 +136,22 @@ namespace Vehicle
 			}
 
 
+			public void TurnHUD(bool on)
+			{
+				for (int i = 0; i < HUDComponents.Length; i++)
+				{
+					Component c = HUDComponents[i];
+					c.gameObject.SetActive(on);
+				}
+			}
+
 			/// <summary>
 			/// Updates the UI Text to the Message supplied.
 			/// </summary>
-			public void UpdateText(Text text, string message)
-			{
-				text.text = message;
-			}
+			//public void UpdateText(Text text, string message)
+			//{
+			//	text.text = message;
+			//}
 
 
 			public IEnumerator AnimateText(Text t, string msg)
@@ -160,7 +178,7 @@ namespace Vehicle
 						c.GetComponent<Image>().material.color = colour;
 
 					if (c.GetComponent<Text>())
-						c.GetComponent<Text>().material.color = colour;
+						c.GetComponent<Text>().color = colour;
 
 					if (c.GetComponent<Renderer>())
 						c.GetComponent<Renderer>().sharedMaterial.color = colour;
