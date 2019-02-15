@@ -124,7 +124,7 @@ namespace Vehicle
 			void FireHomingMissile()
 			{
 				// Instantiate a new homing missile and set its target
-				GameObject m = Instantiate(homingMissile, homingMissileSpawn.position, Quaternion.identity) as GameObject;
+				GameObject m = Instantiate(homingMissile, homingMissileSpawn.position, homingMissileSpawn.rotation) as GameObject;
 				m.GetComponent<HomingMissileSystem>().target = target.transform;
 			}
 

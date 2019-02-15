@@ -25,6 +25,7 @@ namespace Weapons
 		private Rigidbody rb;
 		private JetCounterMeasuresSystem jetCounterMeasuresSystem;
 
+	
 		void Start()
 		{
 			smokeParent = GameObject.Find("Smokes");
@@ -34,11 +35,18 @@ namespace Weapons
 
 			rb = GetComponent<Rigidbody>();
 
-			PlayRandomLaunchSound();
-
+			StartCoroutine(DelayCollider());
 			StartCoroutine(DestroyAfterLifetime(15f));
+
+			PlayRandomLaunchSound();
 		}
 
+		IEnumerator DelayCollider()
+		{
+			GetComponent<Collider>().enabled = false;
+			yield return new WaitForSeconds(1f);
+			GetComponent<Collider>().enabled = true;
+		}
 
 		void FixedUpdate()
 		{
@@ -130,11 +138,9 @@ namespace Weapons
 					StartCoroutine(StopSmokeAndDestroy());
 					break;
 
-				case "Missile Turret":
-					return;
-
-				case "Warship":
-					return;
+				default:
+					print("UNRECOGNISED TAG: " + other.gameObject.tag);
+					break;
 			}
 		}
 
