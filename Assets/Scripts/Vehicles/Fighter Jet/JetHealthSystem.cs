@@ -6,42 +6,34 @@ using Utilities;
 
 namespace Vehicle
 {
-    namespace FighterJet
-    {
-public class JetHealthSystem : MonoBehaviour 
-{
-    public int health = 100;
-    public Text healthText;
+	namespace FighterJet
+	{
+		public class JetHealthSystem : HealthSystem
+		{
+			public Text healthText;
 
-    public void DecreaseHealth(int amount)
-    {
-        health -= amount;
+			IEnumerator TriggerGameOver()
+			{
+				PlayerPrefs.SetInt("First Play", 1);
 
-        JetHUDSystem.instance.UpdateText(healthText, health.ToString() + "%");
+				FadeHelper.instance.BlackOut();
+				yield return new WaitForSeconds(1f);
+				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			}
 
-        if (health <= 0)
-        {
-            StartCoroutine(TriggerGameOver());
-        }
-    }
+			void OnTriggerEnter(Collider other)
+			{
+				if (other.tag == "Environment")
+				{
+					AudioListener.pause = true;
+					StartCoroutine(TriggerGameOver());
+				}
+			}
 
-	IEnumerator TriggerGameOver()
-    {
-        PlayerPrefs.SetInt("First Play", 1);
-
-        FadeHelper.instance.BlackOut ();
-		yield return new WaitForSeconds (1f);
-		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-		if (other.tag == "Environment")
-        {
-            AudioListener.pause = true;
-			StartCoroutine(TriggerGameOver());
-        }
-    }
-}
-    }
+			public override void Destroy()
+			{
+				StartCoroutine(TriggerGameOver());
+			}
+		}
+	}
 }

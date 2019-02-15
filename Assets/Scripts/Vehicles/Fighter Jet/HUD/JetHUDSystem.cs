@@ -184,6 +184,12 @@ namespace Vehicle
 						c.GetComponent<Renderer>().sharedMaterial.color = colour;
 				}
 			}
+
+			public void SetTargetInformationText(string distance, string name)
+			{
+				targetDistanceText.text = distance;
+				targetInformationText.text = name;
+			}
 		}
 	}
 }
