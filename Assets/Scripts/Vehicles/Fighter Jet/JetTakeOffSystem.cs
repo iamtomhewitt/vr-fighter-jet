@@ -8,16 +8,15 @@ namespace Vehicle
     {
         public class JetTakeOffSystem : MonoBehaviour
         {
-            public Text informationText;
+			public bool quickTakeOff;
 
             [Header("Activated After Takeoff")]
             public MonoBehaviour[] jetScripts;
             public BoxCollider boxCollider;
-            public bool quickTakeOff;
 
-            float accelerationRate;
+            private float accelerationRate;
 
-            Rigidbody rb;
+            private Rigidbody rb;
 
             void Start()
             {
@@ -42,7 +41,7 @@ namespace Vehicle
 
             IEnumerator TakeOff()
             {
-                JetHUDSystem.instance.gameObject.SetActive(false);
+				JetHUDSystem.instance.ShowHUD(false);
 
                 yield return new WaitForSeconds(3f);
 
@@ -52,30 +51,32 @@ namespace Vehicle
 
                 AudioManager.instance.Play("Cockpit Beep");
 
-                JetHUDSystem.instance.gameObject.SetActive(true);
+				JetHUDSystem.instance.ShowHUD(true);
 
-                yield return new WaitForSeconds(8.5f);
+				yield return new WaitForSeconds(8.5f);
 
                 AudioManager.instance.Play("Jet Engines");
                 AudioManager.instance.Play("Jet Engine Kick");
-                yield return JetHUDSystem.instance.AnimateText(informationText, "INITIATING TAKE OFF SEQUENCE \n\nENGINES   /INIT \nWEAPONS /INIT");
-                yield return JetHUDSystem.instance.AnimateText(informationText, "\n\nENGINES   /OK \nWEAPONS /OK");
-                yield return JetHUDSystem.instance.AnimateText(informationText, "\n\nSYSTEMS NOMINAL");
+
+                yield return JetHUDSystem.instance.AnimateTakeOffText("INITIATING TAKE OFF SEQUENCE \n\nENGINES   /INIT \nWEAPONS /INIT");
+                yield return JetHUDSystem.instance.AnimateTakeOffText("\n\nENGINES   /OK \nWEAPONS /OK");
+                yield return JetHUDSystem.instance.AnimateTakeOffText("\n\nSYSTEMS NOMINAL");
 
                 yield return new WaitForSeconds(1f);
 
-                JetHUDSystem.instance.UpdateText(informationText, "INITIATING TAKE OFF SEQUENCE");
-                yield return JetHUDSystem.instance.AnimateText(informationText, "\n\nLAUNCHING...");
+				yield return JetHUDSystem.instance.AnimateTakeOffText("\n\nLAUNCHING...");
 
                 AudioManager.instance.Play("Cockpit Takeoff Countdown");
 
-                yield return new WaitForSeconds(AudioManager.instance.GetSound("Cockpit Takeoff Countdown").clip.length);
+                yield return new WaitForSeconds(AudioManager.instance.GetSound("Takeoff Countdown").clip.length);
 
                 accelerationRate = 200;
 
                 AudioManager.instance.Play("Jet Takeoff Blast");
-                JetHUDSystem.instance.UpdateText(informationText, "");
-                yield return new WaitForSeconds(3f);
+
+				JetHUDSystem.instance.SetTakeOffText("");
+
+				yield return new WaitForSeconds(3f);
 
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;

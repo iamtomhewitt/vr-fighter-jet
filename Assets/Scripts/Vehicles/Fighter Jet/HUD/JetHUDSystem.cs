@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
 using Vehicle.FighterJet;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -44,9 +45,11 @@ namespace Vehicle
 			public GameObject centralTarget;
 			public Text flaresText;
 			public Text targetInformationText;
+			public Text speedText;
 			public Text targetDistanceText;
 			public Text healthText;
 			public Text takeoffText;
+			public Text warningText;
 
 			[Space()]
 			public Component[] HUDComponents;
@@ -136,7 +139,7 @@ namespace Vehicle
 			}
 
 
-			public void TurnHUD(bool on)
+			public void ShowHUD(bool on)
 			{
 				for (int i = 0; i < HUDComponents.Length; i++)
 				{
@@ -145,16 +148,12 @@ namespace Vehicle
 				}
 			}
 
-			/// <summary>
-			/// Updates the UI Text to the Message supplied.
-			/// </summary>
-			//public void UpdateText(Text text, string message)
-			//{
-			//	text.text = message;
-			//}
+			public IEnumerator AnimateTakeOffText(string msg)
+			{
+				yield return StartCoroutine(AnimateText(takeoffText, msg));
+			}
 
-
-			public IEnumerator AnimateText(Text t, string msg)
+			private IEnumerator AnimateText(Text t, string msg)
 			{
 				int i = 0;
 				//t.text = "";
@@ -189,6 +188,27 @@ namespace Vehicle
 			{
 				targetDistanceText.text = distance;
 				targetInformationText.text = name;
+			}
+
+			public void SetFlareStatusText(string text)
+			{
+				flaresText.text = text;
+			}
+
+			public void SetSpeedText(string text)
+			{
+				speedText.text = text;
+			}
+
+			public void SetTakeOffText(string text)
+			{
+				takeoffText.text = text;
+			}
+
+			public void ShowHostileLock()
+			{
+				warningText.text = "WARN";
+				ChangeColourWarning();
 			}
 		}
 	}
