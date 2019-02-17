@@ -24,7 +24,6 @@ namespace Weapons
 
 		private Rigidbody rb;
 		private JetCounterMeasuresSystem jetCounterMeasuresSystem;
-
 	
 		void Start()
 		{
@@ -62,7 +61,7 @@ namespace Weapons
 			{
 				//JetHUDSystem.instance.UpdateText (jetCounterMeasuresSystem.lockWarningText, "WARN");
 				print("TODO: Warning text");
-				JetHUDSystem.instance.ChangeColourNormal();
+				JetHUDSystem.instance.ShowHostileLock();
 
 				if (!AudioManager.instance.GetSound("Cockpit Warning Lock").source.isPlaying)
 					AudioManager.instance.Play("Cockpit Warning Lock");
@@ -91,7 +90,7 @@ namespace Weapons
 		void PlayRandomLaunchSound()
 		{
 			int i = Random.Range(1, 4);
-			AudioManager.instance.AttachSoundTo("Weapon Homing Missile " + i, this.gameObject);
+			AudioManager.instance.AttachSoundTo("Weapon Homing Missile 1", this.gameObject);
 			GetComponent<AudioSource>().Play();
 		}
 
@@ -102,6 +101,10 @@ namespace Weapons
 			{
 				case "Target":
 					other.gameObject.GetComponent<HealthSystem>().RemoveHealth(150);
+					StartCoroutine(StopSmokeAndDestroy());
+					break;
+
+				case "Environment":
 					StartCoroutine(StopSmokeAndDestroy());
 					break;
 
