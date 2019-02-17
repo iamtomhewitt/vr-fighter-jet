@@ -23,7 +23,7 @@ namespace Weapons
 
 		void OnCollisionEnter(Collision other)
 		{
-			if (other.gameObject.tag == "AI Jet" || other.gameObject.tag == "Warship")
+			if (other.gameObject.tag.Equals("Target"))
 			{
 				other.gameObject.GetComponent<HealthSystem>().RemoveHealth(40);
 				Destroy(this.gameObject);

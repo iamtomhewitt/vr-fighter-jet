@@ -18,34 +18,32 @@ namespace Vehicle
 		{
 			[Header("Cannon/Bullet Settings")]
 			public GameObject bullet;
-
 			public float bulletFireRate;
 			private float bulletCooldown;
-
 			public GameObject[] bulletSpawns;
 
 			[Header("Homing Missile Settings")]
 			public GameObject homingMissile;
 			public Transform homingMissileSpawn;
-			public Text statusText;
-			public Text distanceText;
-			public float lockOnDistance;
 			public float homingMissileFireRate;
+			private float homingMissileCooldown;
+			private bool missileLock;
+
+			[Header("Missile Lock Settings")]
+			public float lockOnDistance;
+			public float lockOnRadius;
 
 			private GameObject target;
 			private GameObject lastLookedTarget;
-			private bool missileLock;
-			private float homingMissileCooldown;
 
 			void Update()
 			{
-				// 'Cool' the cooldowns
 				bulletCooldown -= Time.deltaTime;
 				homingMissileCooldown -= Time.deltaTime;
 
 				// Control checks
 				ControlBulletAudio();
-				CheckForMissileLock();
+				GetMissileLock();
 
 				// If we press bullet fire
 				if ((Input.GetButton("Xbox Controller LB") || Input.GetButton("Fire1")) && bulletCooldown <= 0)
@@ -70,10 +68,8 @@ namespace Vehicle
 
 			void FireBullet()
 			{
-				// Instantiate a physical bullet spawn and a muzzleflash
-				Instantiate(bullet,
-							bulletSpawns[Random.Range(0, bulletSpawns.Length)].transform.position,
-							bulletSpawns[Random.Range(0, bulletSpawns.Length)].transform.rotation);
+				Transform spawn = bulletSpawns[Random.Range(0, bulletSpawns.Length)].transform;
+				Instantiate(bullet, spawn.position, spawn.rotation);
 			}
 
 			void ControlBulletAudio()
@@ -87,11 +83,11 @@ namespace Vehicle
 				//bulletSound.Pause();
 			}
 
-			void CheckForMissileLock()
+			void GetMissileLock()
 			{
-				GameObject lookedObject = GazeRaycaster.GetSphereCastedGameObject(lockOnDistance, 75f);
+				GameObject lookedObject = GazeRaycaster.GetSphereCastedGameObject(lockOnDistance, lockOnRadius);
 
-				if (lookedObject != null && (lookedObject.tag == "AI Jet" || lookedObject.tag == "Target"))
+				if (lookedObject != null && (lookedObject.tag.Equals("Target")))
 				{
 					// Work out the distance between us
 					float distance = Mathf.Round(Vector3.Distance(transform.position, lookedObject.transform.position));
