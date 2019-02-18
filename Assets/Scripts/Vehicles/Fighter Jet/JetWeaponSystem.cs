@@ -24,10 +24,11 @@ namespace Vehicle
 
 			[Header("Homing Missile Settings")]
 			public GameObject homingMissile;
-			public Transform homingMissileSpawn;
+			public Transform[] homingMissileSpawns;
 			public float homingMissileFireRate;
 			private float homingMissileCooldown;
 			private bool missileLock;
+			private int missileSpawnIndex = 0;
 
 			[Header("Missile Lock Settings")]
 			public float lockOnDistance;
@@ -119,8 +120,13 @@ namespace Vehicle
 
 			void FireHomingMissile()
 			{
+				Transform spawn = homingMissileSpawns[missileSpawnIndex];
+				missileSpawnIndex++;
+				if (missileSpawnIndex == homingMissileSpawns.Length)
+					missileSpawnIndex = 0;
+
 				// Instantiate a new homing missile and set its target
-				GameObject m = Instantiate(homingMissile, homingMissileSpawn.position, homingMissileSpawn.rotation) as GameObject;
+				GameObject m = Instantiate(homingMissile, spawn.position, spawn.rotation) as GameObject;
 				m.GetComponent<HomingMissileSystem>().target = target.transform;
 			}
 
@@ -129,18 +135,14 @@ namespace Vehicle
 				if (t == null)
 					return;
 
-				//if (locked)
-				//	t.GetComponent<AIJetCounterMeasuresSystem>().lockOnGraphic.SetLockColour();
-				//else
-				//	t.GetComponent<AIJetCounterMeasuresSystem>().lockOnGraphic.ResetLockColour();
-
 				// For every child transform in the target
 				foreach (Transform g in t.transform)
 				{
 					// If its a lock on graphic
 					if (g.tag == "Lock On")
 					{
-						g.gameObject.SetActive(locked);
+						LockOnGraphic graphic = g.GetComponent<LockOnGraphic>();
+						if (locked) graphic.SetLockColour(); else graphic.ResetLockColour();
 						return;
 					}
 				}
