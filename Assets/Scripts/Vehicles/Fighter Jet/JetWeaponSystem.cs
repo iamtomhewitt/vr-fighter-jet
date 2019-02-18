@@ -87,7 +87,7 @@ namespace Vehicle
 			{
 				GameObject lookedObject = GazeRaycaster.GetSphereCastedGameObject(lockOnDistance, lockOnRadius);
 
-				if (lookedObject != null && (lookedObject.tag.Equals("Target")))
+				if (lookedObject != null && lookedObject.tag.Equals("Target"))
 				{
 					// Work out the distance between us
 					float distance = Mathf.Round(Vector3.Distance(transform.position, lookedObject.transform.position));
