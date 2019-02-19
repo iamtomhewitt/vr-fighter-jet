@@ -174,13 +174,21 @@ namespace Vehicle
 					Component c = HUDComponents[i];
 
 					if (c.GetComponent<Image>())
-						c.GetComponent<Image>().material.color = colour;
+					{
+						c.GetComponent<Image>().color = colour;
+					}
 
 					if (c.GetComponent<Text>())
+					{
 						c.GetComponent<Text>().color = colour;
+					}
 
 					if (c.GetComponent<Renderer>())
-						c.GetComponent<Renderer>().sharedMaterial.color = colour;
+					{
+						MaterialPropertyBlock props = new MaterialPropertyBlock();
+						props.SetColor("_Color", colour);
+						c.GetComponent<Renderer>().SetPropertyBlock(props);
+					}
 				}
 			}
 
