@@ -4,55 +4,55 @@ using UnityEngine;
 
 namespace AIFighterJet
 {
-public class AIJetWreckage : MonoBehaviour
-{
-	public GameObject secondaryExplosion;
-	public float force;
-	public float torque;
-	public Rigidbody[] parts;
-	public ParticleSystem[] smokes;
-
-	private IEnumerator Start()
+	public class AIJetWreckage : MonoBehaviour
 	{
-        for (int i = 0; i < parts.Length; i++)
-        {
-            yield return new WaitForSeconds(Random.Range(.5f, 1.5f));
-            Instantiate(secondaryExplosion, parts[i].transform.position, Quaternion.identity);
-            smokes[i].transform.parent = null;
-            SetSmokeEmissionRate(0f, i);
-            Destroy(parts[i].gameObject);
-        }
-		
-		Destroy(gameObject);
-	}
+		public GameObject secondaryExplosion;
+		public float force;
+		public float torque;
+		public Rigidbody[] parts;
+		public ParticleSystem[] smokes;
 
-	public void ApplyForces(Vector3 direction)
-	{
-		for (int i = 0; i < parts.Length; i++)
+		private IEnumerator Start()
 		{
-			float x = Random.Range(-torque, torque);
-			float y = Random.Range(-torque, torque);
-			float z = Random.Range(-torque, torque);
+			for (int i = 0; i < parts.Length; i++)
+			{
+				yield return new WaitForSeconds(Random.Range(.5f, 1.5f));
+				Instantiate(secondaryExplosion, parts[i].transform.position, Quaternion.identity);
+				smokes[i].transform.parent = null;
+				SetSmokeEmissionRate(0f, i);
+				Destroy(parts[i].gameObject);
+			}
 
-			float f = Random.Range(force-50f, force+50f);
+			Destroy(gameObject);
+		}
 
-            float offsetX = Random.Range(-.1f, .1f);
-            float offsetY = Random.Range(-.1f, .1f);
-            float offsetZ = Random.Range(-.1f, .1f);
+		public void ApplyForces(Vector3 direction)
+		{
+			for (int i = 0; i < parts.Length; i++)
+			{
+				float x = Random.Range(-torque, torque);
+				float y = Random.Range(-torque, torque);
+				float z = Random.Range(-torque, torque);
 
-            direction += new Vector3(offsetX, offsetY, offsetZ);
+				float f = Random.Range(force - 50f, force + 50f);
 
-			parts[i].AddForce(direction * f, ForceMode.Impulse);
-			parts[i].AddTorque(x, y, z, ForceMode.Impulse);
+				float offsetX = Random.Range(-.1f, .1f);
+				float offsetY = Random.Range(-.1f, .1f);
+				float offsetZ = Random.Range(-.1f, .1f);
+
+				direction += new Vector3(offsetX, offsetY, offsetZ);
+
+				parts[i].AddForce(direction * f, ForceMode.Impulse);
+				parts[i].AddTorque(x, y, z, ForceMode.Impulse);
+			}
+		}
+
+		public void SetSmokeEmissionRate(float emissionRate, int i)
+		{
+			ParticleSystem.EmissionModule emission = smokes[i].emission;
+			ParticleSystem.MinMaxCurve rate = emission.rateOverTime;
+			rate.constantMax = emissionRate;
+			emission.rateOverTime = rate;
 		}
 	}
-
-    public void SetSmokeEmissionRate(float emissionRate, int i)
-	{
-        ParticleSystem.EmissionModule emission = smokes[i].emission;
-		ParticleSystem.MinMaxCurve rate = emission.rateOverTime;
-		rate.constantMax = emissionRate;
-		emission.rateOverTime = rate;
-	}
-}
 }
