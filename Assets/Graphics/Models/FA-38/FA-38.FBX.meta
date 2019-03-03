@@ -8,11 +8,17 @@ ModelImporter:
     100004: Glass
     100006: Cockpit Joystick
     100008: Fighter Jet
+    100010: Throttle
+    100012: Object008
+    100014: Object009
     400000: Aircraft
     400002: //RootNode
     400004: Glass
     400006: Cockpit Joystick
     400008: Fighter Jet
+    400010: Throttle
+    400012: Object008
+    400014: Object009
     2100000: FA38_Airborne_Tex_0667_0_dds
     2100002: FA38_Airborne_Tex_0662_0_dds
     2100004: FA38_Airborne_Material__26
@@ -23,14 +29,23 @@ ModelImporter:
     2300002: Glass
     2300004: Cockpit Joystick
     2300006: Fighter Jet
+    2300008: Throttle
+    2300010: Object008
+    2300012: Object009
     3300000: Aircraft
     3300002: Glass
     3300004: Cockpit Joystick
     3300006: Fighter Jet
+    3300008: Throttle
+    3300010: Object008
+    3300012: Object009
     4300000: Glass
     4300002: Aircraft
     4300004: Fighter Jet
     4300006: Cockpit Joystick
+    4300008: Throttle
+    4300010: Object008
+    4300012: Object009
   externalObjects: {}
   materials:
     importMaterials: 1

@@ -6,24 +6,25 @@ namespace AIFighterJet
 {
 	public class AIJetWreckage : MonoBehaviour
 	{
-		public GameObject secondaryExplosion;
 		public float force;
 		public float torque;
+
 		public Rigidbody[] parts;
 		public ParticleSystem[] smokes;
 
-		private IEnumerator Start()
+		private void Start()
+		{
+			Size();
+		}
+
+		private void Size()
 		{
 			for (int i = 0; i < parts.Length; i++)
 			{
-				yield return new WaitForSeconds(Random.Range(.5f, 1.5f));
-				Instantiate(secondaryExplosion, parts[i].transform.position, Quaternion.identity);
-				smokes[i].transform.parent = null;
-				SetSmokeEmissionRate(0f, i);
-				Destroy(parts[i].gameObject);
+				float scale = Random.Range(3, 10);
+				parts[i].transform.localScale = new Vector3(scale, scale, scale);
+				smokes[i].transform.localScale = new Vector3(scale, scale, scale);
 			}
-
-			Destroy(gameObject);
 		}
 
 		public void ApplyForces(Vector3 direction)

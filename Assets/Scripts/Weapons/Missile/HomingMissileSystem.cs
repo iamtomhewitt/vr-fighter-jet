@@ -35,7 +35,7 @@ namespace Weapons
 			rb = GetComponent<Rigidbody>();
 
 			StartCoroutine(DelayCollider());
-			StartCoroutine(DestroyAfterLifetime(15f));
+			StartCoroutine(DestroyAfterLifetime(7.5f));
 
 			PlayRandomLaunchSound();
 		}
