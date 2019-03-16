@@ -30,7 +30,7 @@ namespace Vehicle
                 else
                 {
                     SetComponents(false);
-                    StartCoroutine(TakeOff());
+                    //StartCoroutine(TakeOff());
                 }
             }
 
@@ -38,6 +38,11 @@ namespace Vehicle
             {
                 rb.AddForce(transform.forward * accelerationRate, ForceMode.Acceleration);
             }
+
+			public void InitiateTakeOffSequence()
+			{
+				StartCoroutine(TakeOff());
+			}
 
             IEnumerator TakeOff()
             {

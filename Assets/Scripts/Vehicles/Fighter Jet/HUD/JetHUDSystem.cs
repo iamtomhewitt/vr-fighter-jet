@@ -18,6 +18,7 @@ namespace Vehicle
 			public Color HUDColour, warningColour;
 			public static JetHUDSystem instance;
 			private Rigidbody rb;
+			private bool HUDActive = false;
 
 			[Header("Pitch Ladder Settings")]
 			public GameObject pitchLadder;
@@ -146,6 +147,12 @@ namespace Vehicle
 					Component c = HUDComponents[i];
 					c.gameObject.SetActive(on);
 				}
+			}
+
+			public void ToggleHUD()
+			{
+				HUDActive = !HUDActive;
+				ShowHUD(HUDActive);
 			}
 
 			public IEnumerator AnimateTakeOffText(string msg)
