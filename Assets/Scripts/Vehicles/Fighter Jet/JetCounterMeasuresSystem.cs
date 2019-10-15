@@ -42,6 +42,14 @@ namespace Vehicle
 				}
 			}
 
+			/// <summary>
+			/// Called from a VRButton.
+			/// </summary>
+			public void DeployFlares()
+			{
+				StartCoroutine(SpawnFlares());
+			}
+
 			IEnumerator SpawnFlares()
 			{
 				AudioManager.instance.Play("Cockpit Flare Deploy");

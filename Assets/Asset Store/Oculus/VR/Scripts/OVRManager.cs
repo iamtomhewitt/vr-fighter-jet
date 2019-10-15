@@ -1075,10 +1075,10 @@ public class OVRManager : MonoBehaviour
 
 		instance = this;
 
-		Debug.Log("Unity v" + Application.unityVersion + ", " +
-				  "Oculus Utilities v" + OVRPlugin.wrapperVersion + ", " +
-				  "OVRPlugin v" + OVRPlugin.version + ", " +
-				  "SDK v" + OVRPlugin.nativeSDKVersion + ".");
+		//Debug.Log("Unity v" + Application.unityVersion + ", " +
+		//		  "Oculus Utilities v" + OVRPlugin.wrapperVersion + ", " +
+		//		  "OVRPlugin v" + OVRPlugin.version + ", " +
+		//		  "SDK v" + OVRPlugin.nativeSDKVersion + ".");
 
 #if !UNITY_EDITOR
 		if (IsUnityAlphaOrBetaVersion())

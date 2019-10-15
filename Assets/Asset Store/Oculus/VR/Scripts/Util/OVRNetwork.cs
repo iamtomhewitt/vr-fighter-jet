@@ -107,7 +107,7 @@ public class OVRNetwork
 
 			if (tcpListener != null)
 			{
-				Debug.LogFormat("[OVRNetworkTcpServer] Start Listening on port {0}", listeningPort);
+				//Debug.LogFormat("[OVRNetworkTcpServer] Start Listening on port {0}", listeningPort);
 
 				try
 				{
@@ -135,7 +135,7 @@ public class OVRNetwork
 			tcpListener.Stop();
 			tcpListener = null;
 
-			Debug.Log("[OVRNetworkTcpServer] Stopped listening");
+			//Debug.Log("[OVRNetworkTcpServer] Stopped listening");
 		}
 
 		private void DoAcceptTcpClientCallback(IAsyncResult ar)

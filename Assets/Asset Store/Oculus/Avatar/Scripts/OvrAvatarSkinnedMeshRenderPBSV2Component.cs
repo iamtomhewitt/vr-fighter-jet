@@ -67,12 +67,12 @@ public class OvrAvatarSkinnedMeshPBSV2RenderComponent : OvrAvatarRenderComponent
 			!t.gameObject.GetComponent(typeof(SphereCollider)) &&
 			t.name.Contains("hands"))
 		{
-			// Check its a finger
-			if (t.name.Contains("thumb") ||
-				t.name.Contains("index") ||
-				t.name.Contains("middle") ||
-				t.name.Contains("ring") ||
-				t.name.Contains("pinky"))
+			// Check its a finger tip (denoted by the number '3')
+			if (t.name.Contains("thumb3") ||
+				t.name.Contains("index3") ||
+				t.name.Contains("middle3") ||
+				t.name.Contains("ring3") ||
+				t.name.Contains("pinky3"))
 			{
 				// Pinky finger has additional bone that we dont need, so check here
 				if (!t.name.EndsWith("0"))

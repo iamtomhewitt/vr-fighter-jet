@@ -9,6 +9,7 @@ namespace Vehicle
         public class JetTakeOffSystem : MonoBehaviour
         {
 			public bool quickTakeOff;
+			public bool takeOffInitiated;
 
             [Header("Activated After Takeoff")]
             public MonoBehaviour[] jetScripts;
@@ -30,7 +31,6 @@ namespace Vehicle
                 else
                 {
                     SetComponents(false);
-                    //StartCoroutine(TakeOff());
                 }
             }
 
@@ -39,16 +39,21 @@ namespace Vehicle
                 rb.AddForce(transform.forward * accelerationRate, ForceMode.Acceleration);
             }
 
+			/// <summary>
+			/// Called from the VRButton in the cockpit, so that the engines are started via the player.
+			/// </summary>
 			public void InitiateTakeOffSequence()
 			{
-				StartCoroutine(TakeOff());
+				if (!takeOffInitiated)
+				{
+					takeOffInitiated = true;
+					StartCoroutine(TakeOff());
+				}
 			}
 
             IEnumerator TakeOff()
             {
 				JetHUDSystem.instance.ShowHUD(false);
-
-                yield return new WaitForSeconds(3f);
 
                 AudioManager.instance.Play("Jet Startup");
 

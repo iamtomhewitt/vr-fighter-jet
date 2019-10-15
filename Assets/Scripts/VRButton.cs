@@ -18,23 +18,22 @@ public class VRButton : MonoBehaviour
 
 	public bool pressed;
 
-	private string lastCollidedTag = "";
-
 	private void OnTriggerEnter(Collider collision)
 	{
-		// If the button has collided with our finger, and we have font collided with a finger before
-		if (collision.tag == "VR Finger" && collision.tag != lastCollidedTag)
+		print("VRButton " + transform.name + " has Trigger ENTER collided with " + collision.transform.name);
+
+		if (collision.tag == "VR Finger")
 		{
 			buttonModel.transform.position = endPos.position;
 			pressed = true;
 		}
-
-		lastCollidedTag = collision.tag;
 	}
 
 	private void OnTriggerExit(Collider collision)
 	{
-		if (collision.tag == "VR Finger" && collision.tag != lastCollidedTag)
+		print("VRButton " + transform.name + " has Trigger EXIT collided with " + collision.transform.name);
+
+		if (collision.tag == "VR Finger")
 		{
 			if (pressed)
 				buttonPressEvent.Invoke();
@@ -42,7 +41,5 @@ public class VRButton : MonoBehaviour
 			buttonModel.transform.position = startPos.position;
 			pressed = false;
 		}
-
-		lastCollidedTag = "";
 	}
 }
