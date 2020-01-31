@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
@@ -20,7 +18,7 @@ public class VRButton : MonoBehaviour
 
 	private void OnTriggerEnter(Collider collision)
 	{
-		print("VRButton " + transform.name + " has Trigger ENTER collided with " + collision.transform.name);
+		//print("VRButton " + transform.name + " has Trigger ENTER collided with " + collision.transform.name);
 
 		if (collision.tag == "VR Finger")
 		{
@@ -31,12 +29,14 @@ public class VRButton : MonoBehaviour
 
 	private void OnTriggerExit(Collider collision)
 	{
-		print("VRButton " + transform.name + " has Trigger EXIT collided with " + collision.transform.name);
+		//print("VRButton " + transform.name + " has Trigger EXIT collided with " + collision.transform.name);
 
 		if (collision.tag == "VR Finger")
 		{
 			if (pressed)
+			{
 				buttonPressEvent.Invoke();
+			}
 
 			buttonModel.transform.position = startPos.position;
 			pressed = false;
