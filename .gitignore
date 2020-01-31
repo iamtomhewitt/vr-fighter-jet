@@ -19,6 +19,12 @@ obj/
 *.unityproj
 *.booproj
 
+# ================= #
+# VS Code generated #
+# ================= #
+.vs/
+.vscode
+
 # ============ #
 # OS generated #
 # ============ #
@@ -30,9 +36,13 @@ obj/
 ehthumbs.db
 Thumbs.db
 
-
+# ============ #
+# Others	   #
+# ============ #
 /Build
 /.vs/Fighter Jet Simulator/v15/Server/sqlite3/db.lock
 /.vs/Fighter Jet Simulator/v15/Server/sqlite3/storage.ide
 /.vs/Fighter Jet Simulator/v15/sqlite3/db.lock
 /.vs/Fighter Jet Simulator/v15/sqlite3/storage.ide
+/Packages
+/Logs
