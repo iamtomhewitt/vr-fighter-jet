@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Vehicle.FighterJet;
+using Player;
 
 namespace Utilities
 {

@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Vehicle.FighterJet;
-using Vehicle;
-using AIFighterJet;
-using UI;
 using Player;
+using UI;
 
 namespace Weapons
 {
