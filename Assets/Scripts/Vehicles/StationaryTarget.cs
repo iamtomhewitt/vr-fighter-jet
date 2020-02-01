@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿/// <summary>
+/// A target that does not move.
+/// </summary>
 public class StationaryTarget : HealthSystem
 {
-	public override void Destroy()
+	public override void Die()
 	{
 		return;
 	}

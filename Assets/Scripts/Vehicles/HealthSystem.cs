@@ -1,15 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// A health system that can be attached to any object that requires health that can be decreased.
+/// </summary>
 public abstract class HealthSystem : MonoBehaviour
 {
-	public int health;
-	public bool godMode;
+	[SerializeField] private int health;
+	[SerializeField] private bool godMode;
 
 	/// <summary>
 	/// Removes health from the health variable.
-	/// All other things done when health is removed is done in DecreaseHealth();
 	/// </summary>
 	public void RemoveHealth(int amount)
 	{
@@ -20,10 +20,10 @@ public abstract class HealthSystem : MonoBehaviour
 
 		if (health <= 0)
 		{
-			print(this.gameObject.name + " has been killed.");
-			this.Destroy();
+			print(this.gameObject.name + " has died");
+			this.Die();
 		}
 	}
 
-	public abstract void Destroy();
+	public abstract void Die();
 }

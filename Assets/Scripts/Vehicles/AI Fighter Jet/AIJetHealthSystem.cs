@@ -9,7 +9,7 @@ namespace AIFighterJet
         public GameObject explosion;
         public GameObject wreckage;
 
-		public override void Destroy()
+		public override void Die()
 		{
 			GameObject e = Instantiate(explosion, transform.position, Quaternion.identity) as GameObject;
 			Destroy(e, 15f);

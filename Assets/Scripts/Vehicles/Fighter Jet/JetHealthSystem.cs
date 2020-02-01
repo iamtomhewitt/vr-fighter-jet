@@ -30,7 +30,7 @@ namespace Vehicle
 				}
 			}
 
-			public override void Destroy()
+			public override void Die()
 			{
 				StartCoroutine(TriggerGameOver());
 			}
