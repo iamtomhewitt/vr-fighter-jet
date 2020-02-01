@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Weapons;
 using AIFighterJet;
 using Utilities;
+using UI;
 
 namespace Vehicle
 {
@@ -93,7 +94,7 @@ namespace Vehicle
 					// Work out the distance between us
 					float distance = Mathf.Round(Vector3.Distance(transform.position, lookedObject.transform.position));
 
-					JetHUDSystem.instance.SetTargetInformationText(distance.ToString("F000"), lookedObject.gameObject.tag);
+					Hud.instance.SetTargetInformationText(distance.ToString("F000"), lookedObject.gameObject.tag);
 
 					target = lookedObject;
 
@@ -113,7 +114,7 @@ namespace Vehicle
 					SetLockColour(lastLookedTarget, false);
 
 					// Update the HUD texts, and we no longer have a missile lock
-					JetHUDSystem.instance.SetTargetInformationText("", "");
+					Hud.instance.SetTargetInformationText("", "");
 					missileLock = false;
 				}
 			}

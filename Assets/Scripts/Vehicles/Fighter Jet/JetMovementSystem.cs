@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UI;
 
 namespace Vehicle
 {
@@ -49,7 +50,7 @@ namespace Vehicle
 				// Move constantly forward
 				transform.position += transform.forward * currentSpeed * Time.deltaTime;
 				
-				JetHUDSystem.instance.SetSpeedText(currentSpeed.ToString("0000"));
+				Hud.instance.SetSpeedText(currentSpeed.ToString("0000"));
 
 				AlterPitchAndRoll();
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
+using UI;
 
 namespace Vehicle
 {
@@ -53,7 +53,7 @@ namespace Vehicle
 
             IEnumerator TakeOff()
             {
-				JetHUDSystem.instance.ShowHUD(false);
+				Hud.instance.SetHud(false);
 
                 AudioManager.instance.Play("Jet Startup");
 
@@ -61,20 +61,20 @@ namespace Vehicle
 
                 AudioManager.instance.Play("Cockpit Beep");
 
-				JetHUDSystem.instance.ShowHUD(true);
+				Hud.instance.SetHud(true);
 
 				yield return new WaitForSeconds(8.5f);
 
                 AudioManager.instance.Play("Jet Engines");
                 AudioManager.instance.Play("Jet Engine Kick");
 
-                yield return JetHUDSystem.instance.AnimateTakeOffText("INITIATING TAKE OFF SEQUENCE \n\nENGINES   /INIT \nWEAPONS /INIT");
-                yield return JetHUDSystem.instance.AnimateTakeOffText("\n\nENGINES   /OK \nWEAPONS /OK");
-                yield return JetHUDSystem.instance.AnimateTakeOffText("\n\nSYSTEMS NOMINAL");
+                yield return Hud.instance.AnimateTakeOffText("INITIATING TAKE OFF SEQUENCE \n\nENGINES   /INIT \nWEAPONS /INIT");
+                yield return Hud.instance.AnimateTakeOffText("\n\nENGINES   /OK \nWEAPONS /OK");
+                yield return Hud.instance.AnimateTakeOffText("\n\nSYSTEMS NOMINAL");
 
                 yield return new WaitForSeconds(1f);
 
-				yield return JetHUDSystem.instance.AnimateTakeOffText("\n\nLAUNCHING...");
+				yield return Hud.instance.AnimateTakeOffText("\n\nLAUNCHING...");
 
                 AudioManager.instance.Play("Cockpit Takeoff Countdown");
 
@@ -84,7 +84,7 @@ namespace Vehicle
 
                 AudioManager.instance.Play("Jet Takeoff Blast");
 
-				JetHUDSystem.instance.SetTakeOffText("");
+				Hud.instance.SetTakeOffText("");
 
 				yield return new WaitForSeconds(3f);
 

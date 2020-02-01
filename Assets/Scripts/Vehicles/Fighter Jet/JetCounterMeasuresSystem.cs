@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UI;
 
 namespace Vehicle
 {
@@ -25,7 +26,7 @@ namespace Vehicle
 
 			void Start()
 			{
-				JetHUDSystem.instance.SetFlareStatusText("READY");
+				Hud.instance.SetFlareStatusText("READY");
 			}
 
 			void Update()
@@ -37,7 +38,7 @@ namespace Vehicle
 				if (Input.GetKeyDown(flareButton) && cooldown < 0)
 				{
 					cooldown = flareReloadRate;
-					JetHUDSystem.instance.SetFlareStatusText("");
+					Hud.instance.SetFlareStatusText("");
 					StartCoroutine(SpawnFlares());
 				}
 			}
@@ -68,7 +69,7 @@ namespace Vehicle
 			private IEnumerator ReloadFlares()
 			{
 				yield return new WaitForSeconds(flareReloadRate);
-				JetHUDSystem.instance.SetFlareStatusText("READY");
+				Hud.instance.SetFlareStatusText("READY");
 				AudioManager.instance.Play("Cockpit Beep");
 			}
 		}

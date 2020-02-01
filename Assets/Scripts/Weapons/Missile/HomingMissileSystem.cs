@@ -3,6 +3,7 @@ using System.Collections;
 using Vehicle.FighterJet;
 using Vehicle;
 using AIFighterJet;
+using UI;
 
 namespace Weapons
 {
@@ -59,9 +60,9 @@ namespace Weapons
 			// If the target is the player, then update the hud text
 			if (target == fighterJet)
 			{
-				//JetHUDSystem.instance.UpdateText (jetCounterMeasuresSystem.lockWarningText, "WARN");
+				//Hud.instance.UpdateText (jetCounterMeasuresSystem.lockWarningText, "WARN");
 				print("TODO: Warning text");
-				JetHUDSystem.instance.ShowHostileLock();
+				Hud.instance.ShowHostileLock();
 
 				if (!AudioManager.instance.GetSound("Cockpit Warning Lock").source.isPlaying)
 					AudioManager.instance.Play("Cockpit Warning Lock");
@@ -119,7 +120,7 @@ namespace Weapons
 			switch (other.tag)
 			{
 				case "Flare":
-					//JetHUDSystem.instance.UpdateText(jetCounterMeasuresSystem.lockWarningText, "");
+					//Hud.instance.UpdateText(jetCounterMeasuresSystem.lockWarningText, "");
 					print("TODO: Turn off warning");
 
 					if (target != null && target.gameObject == fighterJet)
@@ -153,8 +154,8 @@ namespace Weapons
 			if (target == fighterJet)
 			{
 				AudioManager.instance.Pause("Cockpit Warning Lock");
-				JetHUDSystem.instance.ChangeColourWarning();
-				//JetHUDSystem.instance.UpdateText(jetCounterMeasuresSystem.lockWarningText, "");
+				Hud.instance.ChangeColourWarning();
+				//Hud.instance.UpdateText(jetCounterMeasuresSystem.lockWarningText, "");
 				print("TODO: Update text");
 			}
 
