@@ -14,17 +14,8 @@ namespace UI
 
 		[SerializeField] private Color hudColour, warningColour;
 		private Rigidbody rb;
-		private bool active = false;
+		private bool active = false;				
 
-		[Header("Pitch Ladder Settings")]
-		[SerializeField] private GameObject pitchLadder;
-		[SerializeField] private float pitchLadderSensitivity;
-		private Renderer pitchLadderRenderer;
-		private float pitchLadderOffset;
-		private float pitch;		
-
-		[Space()]
-		[SerializeField] private GameObject centralTarget;
 		[SerializeField] private Text flaresText;
 		[SerializeField] private Text targetInformationText;
 		[SerializeField] private Text speedText;
@@ -35,6 +26,7 @@ namespace UI
 
 		[SerializeField] private HudHeading heading;
 		[SerializeField] private HudAltitude altitude;
+		[SerializeField] private PitchLadder pitchLadder;
 
 		[SerializeField] private Component[] hudComponents;
 
@@ -45,20 +37,16 @@ namespace UI
 
 		private void Start()
 		{
-			rb					= GetComponent<Rigidbody>();
-			pitchLadderRenderer = pitchLadder.GetComponent<Renderer>();
-
+			rb = GetComponent<Rigidbody>();
 			ColourHUD(hudColour);
 		}
 
 		private void Update()
 		{
-			Vector3 pos = ProjectPointOnPlane(Vector3.up, Vector3.zero, transform.forward);
-
-			// Pitch
-			pitch = SignedAngle(transform.forward, pos, transform.right);
-			pitchLadderOffset = pitch * (pitchLadderSensitivity / 10);
-			pitchLadderRenderer.material.SetTextureOffset("_MainTex", new Vector2(0f, pitchLadderOffset));
+			pitchLadder.SetPitch(transform);
+			pitchLadder.SetPitchOffset();
+			pitchLadder.UpdatePitchLadderMaterial();
+			pitchLadder.AlignWithHorizon(transform);
 
 			altitude.SetAltitudeOffset(transform);
 			altitude.UpdateAltitudeMaterial();
@@ -68,36 +56,12 @@ namespace UI
 			heading.SetHeadingOffset();
 			heading.UpdateHeadingMaterial();
 			heading.SetHeadingText();
-
-			// Ladders
-			pitchLadder.transform.localRotation = AlignWithHorizon();
-			centralTarget.transform.localRotation = AlignWithHorizon();
 		}
 
 		private void OnGUI()
 		{
 			GUI.Label(new Rect(20, 0, 200, 40), "Heading: " + heading.GetDirection().ToString());
-			GUI.Label(new Rect(20, 20, 200, 40), "Pitch: " + pitch.ToString());
-		}
-
-		private Vector3 ProjectPointOnPlane(Vector3 planeNormal, Vector3 planePoint, Vector3 point)
-		{
-			planeNormal.Normalize();
-			float distance = -Vector3.Dot(planeNormal.normalized, (point - planePoint));
-			return point + planeNormal * distance;
-		}
-
-		private float SignedAngle(Vector3 v1, Vector3 v2, Vector3 normal)
-		{
-			Vector3 perp = Vector3.Cross(normal, v1);
-			float angle = Vector3.Angle(v1, v2);
-			angle *= Mathf.Sign(Vector3.Dot(perp, v2));
-			return angle;
-		}
-
-		private Quaternion AlignWithHorizon()
-		{
-			return Quaternion.Euler(transform.localEulerAngles.z + 90f, 0, 90);
+			GUI.Label(new Rect(20, 20, 200, 40), "Pitch: " + pitchLadder.GetPitch().ToString());
 		}
 
 		public void ChangeColourNormal()
