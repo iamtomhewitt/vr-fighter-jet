@@ -2,36 +2,37 @@
 using System.Collections;
 using Player;
 using UI;
+using Utilities;
 
 namespace Weapons
 {
-	public class HomingMissileSystem : MonoBehaviour
+	public class HomingMissile : MonoBehaviour
 	{
 		[Tooltip("Can be set if you want to, but doesn't matter if not")]
-		public Transform target;
-		private Transform fighterJet;
-
-		public GameObject missileModel;
-		public GameObject trailSmoke;
+		[SerializeField] private Transform target;
+		[SerializeField] private GameObject missileModel;
+		[SerializeField] private GameObject trailSmoke;
+		[SerializeField] private ParticleSystem smoke;
+		[SerializeField] private float speed = 5f;
+		[SerializeField] private float turningSpeed;
+		
 		private GameObject smokeParent;
-
-		public ParticleSystem smoke;
-
-		public float speed = 5f;
-		public float turningSpeed;
-		private float fuseDelay;
-
+		private Transform fighterJet;
 		private Rigidbody rb;
 		private CounterMeasuresSystem jetCounterMeasuresSystem;
+		private Collider missileCollider;
+		private float fuseDelay;
+		private float speedMultiplier = 50f;
 	
-		void Start()
+		private void Start()
 		{
-			smokeParent = GameObject.Find("Smokes");
-			fighterJet = GameObject.FindGameObjectWithTag("Fighter Jet").transform;
+			smokeParent = GameObject.Find(Tags.SMOKES);
+			fighterJet = GameObject.FindGameObjectWithTag(Tags.FIGHTER_JET).transform;
 
-			jetCounterMeasuresSystem = GameObject.FindObjectOfType<CounterMeasuresSystem>();
+			jetCounterMeasuresSystem = FindObjectOfType<CounterMeasuresSystem>();
 
 			rb = GetComponent<Rigidbody>();
+			missileCollider = GetComponent<Collider>();
 
 			StartCoroutine(DelayCollider());
 			StartCoroutine(DestroyAfterLifetime(7.5f));
@@ -39,14 +40,7 @@ namespace Weapons
 			PlayRandomLaunchSound();
 		}
 
-		IEnumerator DelayCollider()
-		{
-			GetComponent<Collider>().enabled = false;
-			yield return new WaitForSeconds(1f);
-			GetComponent<Collider>().enabled = true;
-		}
-
-		void FixedUpdate()
+		private void FixedUpdate()
 		{
 			// A target may be null if another homing missile has already shot it down
 			if (target == null)
@@ -63,52 +57,59 @@ namespace Weapons
 				Hud.instance.ShowHostileLock();
 
 				if (!AudioManager.instance.GetSound("Cockpit Warning Lock").source.isPlaying)
+				{
 					AudioManager.instance.Play("Cockpit Warning Lock");
+				}
 			}
 
 			HomeIn();
 		}
 
-
-		void HomeIn()
+		private IEnumerator DelayCollider()
 		{
-			// Move forward
-			//transform.position += transform.forward * speed * Time.deltaTime;
-			rb.velocity = transform.forward * speed * 50 * Time.deltaTime; // use this for better looking particle system smoke
+			missileCollider.enabled = false;
+			yield return new WaitForSeconds(1f);
+			missileCollider.enabled = true;
+		}
+
+		/// <summary>
+		/// Moves towards a target.
+		/// </summary>
+		private void HomeIn()
+		{
+			// Move using rigidbody for betting looking particle smoke
+			rb.velocity = transform.forward * speed * speedMultiplier * Time.deltaTime;
 
 			// Look at our target
 			Quaternion targetRotation = Quaternion.LookRotation(target.position - transform.position);
 
 			// Rotate towards our target
 			rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, targetRotation, turningSpeed));
-
-			//transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2f * Time.deltaTime);
 		}
 
-
-		void PlayRandomLaunchSound()
+		private void PlayRandomLaunchSound()
 		{
 			int i = Random.Range(1, 4);
 			AudioManager.instance.AttachSoundTo("Weapon Homing Missile 1", this.gameObject);
 			GetComponent<AudioSource>().Play();
 		}
 
-
-		void OnCollisionEnter(Collision other)
+		private void OnCollisionEnter(Collision other)
 		{
 			switch (other.gameObject.tag)
 			{
-				case "Target":
+				case Tags.TARGET:
 					other.gameObject.GetComponent<HealthSystem>().RemoveHealth(150);
 					StartCoroutine(StopSmokeAndDestroy());
 					break;
 
-				case "Environment":
+				case Tags.ENVIRONMENT:
 					StartCoroutine(StopSmokeAndDestroy());
 					break;
 
 				default:
 					print("UNRECOGNISED TAG: " + other.gameObject.tag);
+					StartCoroutine(StopSmokeAndDestroy());
 					break;
 			}
 		}
@@ -117,25 +118,27 @@ namespace Weapons
 		{
 			switch (other.tag)
 			{
-				case "Flare":
+				case Tags.FLARE:
 					//Hud.instance.UpdateText(jetCounterMeasuresSystem.lockWarningText, "");
 					print("TODO: Turn off warning");
 
 					if (target != null && target.gameObject == fighterJet)
+					{
 						AudioManager.instance.Pause("Cockpit Warning Lock");
+					}
 					//jetCounterMeasuresSystem.warningLockSound.Pause();
 
-					Destroy(GetComponent<CapsuleCollider>());
+					Destroy(missileCollider);
 					StartCoroutine(StopSmokeAndDestroy());
 					break;
 
-				case "Fighter Jet":
+				case Tags.FIGHTER_JET:
 					other.gameObject.GetComponent<HealthSystem>().RemoveHealth(20);
 
 					AudioManager.instance.Play("Vehicle Damage");
 
 					// Stops creating explosions over and over
-					Destroy(GetComponent<CapsuleCollider>());
+					Destroy(missileCollider);
 
 					StartCoroutine(StopSmokeAndDestroy());
 					break;
@@ -146,8 +149,7 @@ namespace Weapons
 			}
 		}
 
-
-		IEnumerator StopSmokeAndDestroy()
+		private IEnumerator StopSmokeAndDestroy()
 		{
 			if (target == fighterJet)
 			{
@@ -167,7 +169,7 @@ namespace Weapons
 			Destroy(this.gameObject);
 		}
 
-		public void SetSmokeEmissionRate(float emissionRate)
+		private void SetSmokeEmissionRate(float emissionRate)
 		{
 			ParticleSystem.EmissionModule emission = smoke.emission;
 			ParticleSystem.MinMaxCurve rate = emission.rateOverTime;
@@ -175,10 +177,20 @@ namespace Weapons
 			emission.rateOverTime = rate;
 		}
 
-		IEnumerator DestroyAfterLifetime(float lifetime)
+		private IEnumerator DestroyAfterLifetime(float lifetime)
 		{
 			yield return new WaitForSeconds(lifetime);
 			StartCoroutine(StopSmokeAndDestroy());
+		}
+
+		public void SetTarget(Transform target)
+		{
+			this.target = target;
+		}
+
+		public Transform GetTarget()
+		{
+			return target;
 		}
 	}
 }

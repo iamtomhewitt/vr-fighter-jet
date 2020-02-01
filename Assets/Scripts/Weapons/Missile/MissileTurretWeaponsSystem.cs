@@ -23,7 +23,7 @@ public class MissileTurretWeaponsSystem : MonoBehaviour
         if (trackingSystem.lockedOn && trackingSystem.target != null)
         {
             GameObject g = Instantiate(homingMissile, spawn.position, spawn.transform.rotation) as GameObject;
-            g.GetComponent<HomingMissileSystem>().target = trackingSystem.target.transform;
+            g.GetComponent<HomingMissile>().SetTarget(trackingSystem.target.transform);
         }
 	}
 }

@@ -129,7 +129,7 @@ namespace Player
 			}
 
 			// Instantiate a new homing missile and set its target
-			Instantiate(homingMissile, spawn.position, spawn.rotation).GetComponent<HomingMissileSystem>().target = target.transform;
+			Instantiate(homingMissile, spawn.position, spawn.rotation).GetComponent<HomingMissile>().SetTarget(target.transform);
 		}
 
 		private void SetLockColour(GameObject t, bool locked)

@@ -56,8 +56,8 @@ namespace AIFighterJet
 		void Fire()
 		{
 			GameObject g = Instantiate(homingMissile, spawn.position, spawn.rotation) as GameObject;
-			g.GetComponent<HomingMissileSystem>().target = target.transform;
-			print(this.gameObject.name + " has fired a missile at " + g.GetComponent<HomingMissileSystem>().target.name);
+			g.GetComponent<HomingMissile>().SetTarget(target.transform);
+			print(this.gameObject.name + " has fired a missile at " + g.GetComponent<HomingMissile>().GetTarget().name);
 		}
 	}
 }

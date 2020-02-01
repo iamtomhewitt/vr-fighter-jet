@@ -61,6 +61,9 @@ public class AudioManager : MonoBehaviour
         if (s != null) s.source.Pause();
     }
 
+	/// <summary>
+	/// TODO - this should return the AudioSource
+	/// </summary>
     public void AttachSoundTo(string soundName, GameObject g)
     {
         Sound s = GetSound(soundName);
