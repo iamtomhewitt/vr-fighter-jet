@@ -4,6 +4,7 @@ using Vehicle.FighterJet;
 using Vehicle;
 using AIFighterJet;
 using UI;
+using Player;
 
 namespace Weapons
 {
@@ -24,14 +25,14 @@ namespace Weapons
 		private float fuseDelay;
 
 		private Rigidbody rb;
-		private JetCounterMeasuresSystem jetCounterMeasuresSystem;
+		private CounterMeasuresSystem jetCounterMeasuresSystem;
 	
 		void Start()
 		{
 			smokeParent = GameObject.Find("Smokes");
 			fighterJet = GameObject.FindGameObjectWithTag("Fighter Jet").transform;
 
-			jetCounterMeasuresSystem = GameObject.FindObjectOfType<JetCounterMeasuresSystem>();
+			jetCounterMeasuresSystem = GameObject.FindObjectOfType<CounterMeasuresSystem>();
 
 			rb = GetComponent<Rigidbody>();
 
