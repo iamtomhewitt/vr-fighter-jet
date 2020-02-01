@@ -130,8 +130,7 @@ namespace Utilities
 			}
 
 			canvasGroup.interactable = false;
-			GameObject.FindObjectOfType<JetPauseSystem>().PauseGame();
-			JetPauseSystem.instance.PauseGame();
+			PauseSystem.instance.PauseGame();
 			yield return null;
 		}
 
