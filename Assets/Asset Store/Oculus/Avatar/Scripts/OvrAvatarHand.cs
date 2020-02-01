@@ -2,27 +2,47 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using Oculus.Avatar;
 
-/// <summary>
-/// This class was previously empty. However, because we needed collision on Oculus fingers, it needed to be updated to detect collisions when making a fist or not.
-/// 
-/// Tom Hewitt
-/// </summary>
-public class OvrAvatarHand : MonoBehaviour
+public class OvrAvatarHand : OvrAvatarComponent
 {
-	public Rigidbody rb;
-	public bool isLeftHand;
+    public bool isLeftHand = true;
+    ovrAvatarHandComponent component = new ovrAvatarHandComponent();
 
-	private void Start()
-	{
-		isLeftHand = transform.name.Contains("left");
-	}
+    void Update()
+    {
+        if (owner == null)
+        {
+            return;
+        }
 
-	private void Update()
-	{
-		// We only want to detect collisions for the hand if it is not a fist.
-		// Separate fist collision is detected in the TrackingSpace under the hand Anchors, using the Grababble scripts.
-		rb.detectCollisions = isLeftHand ? !OculusInput.IsLeftFistTriggered() : !OculusInput.IsRightFistTriggered();
-		//print(transform.name + " detecting collisions: " + rb.detectCollisions);
-	}
+        bool hasComponent = false;
+        if (isLeftHand)
+        {
+            hasComponent = CAPI.ovrAvatarPose_GetLeftHandComponent(owner.sdkAvatar, ref component);
+        }
+        else
+        {
+            hasComponent = CAPI.ovrAvatarPose_GetRightHandComponent(owner.sdkAvatar, ref component);
+        }
+
+        if (hasComponent)
+        {
+            UpdateAvatar(component.renderComponent);
+        }
+        else
+        {
+            if (isLeftHand)
+            {
+                owner.HandLeft = null;
+
+            }
+            else
+            {
+                owner.HandRight = null;
+            }
+
+            Destroy(this);
+        }
+    }
 }
