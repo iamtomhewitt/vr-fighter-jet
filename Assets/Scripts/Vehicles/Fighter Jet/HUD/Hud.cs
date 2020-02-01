@@ -23,13 +23,6 @@ namespace UI
 		private float pitchLadderOffset;
 		private float pitch;		
 
-		[Header("Altitude Settings")]
-		[SerializeField] private GameObject altitude;
-		[SerializeField] private Text altitudeText;
-		[SerializeField] private float altitudeSensitivity;
-		private Renderer altitudeRenderer;
-		private float altitudeOffset;
-
 		[Space()]
 		[SerializeField] private GameObject centralTarget;
 		[SerializeField] private Text flaresText;
@@ -41,6 +34,7 @@ namespace UI
 		[SerializeField] private Text warningText;
 
 		[SerializeField] private HudHeading heading;
+		[SerializeField] private HudAltitude altitude;
 
 		[SerializeField] private Component[] hudComponents;
 
@@ -53,7 +47,6 @@ namespace UI
 		{
 			rb					= GetComponent<Rigidbody>();
 			pitchLadderRenderer = pitchLadder.GetComponent<Renderer>();
-			altitudeRenderer	= altitude.GetComponent<Renderer>();
 
 			ColourHUD(hudColour);
 		}
@@ -67,10 +60,9 @@ namespace UI
 			pitchLadderOffset = pitch * (pitchLadderSensitivity / 10);
 			pitchLadderRenderer.material.SetTextureOffset("_MainTex", new Vector2(0f, pitchLadderOffset));
 
-			// Altitude
-			altitudeOffset = transform.position.y * (altitudeSensitivity / 10);
-			altitudeRenderer.material.SetTextureOffset("_MainTex", new Vector2(0f, altitudeOffset));
-			altitudeText.text = transform.position.y.ToString("00000");
+			altitude.SetAltitudeOffset(transform);
+			altitude.UpdateAltitudeMaterial();
+			altitude.SetAltitudeText();
 
 			heading.SetDirection(transform);
 			heading.SetHeadingOffset();

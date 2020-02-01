@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace UI
 {
 	/// <summary>
-	/// The heading section of the heads up display.
+	/// The heading component of the heads up display.
 	/// </summary>
 	public class HudHeading : MonoBehaviour
 	{

@@ -5,5 +5,6 @@
 
 	public static string WARNING = "WARN";
 	public static string HEADING_FORMAT = "000";
+	public static string ALTITUDE_FORMAT = "00000";
 
 }
