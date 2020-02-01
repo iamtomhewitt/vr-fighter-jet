@@ -7,6 +7,7 @@
 	public static string READY = "READY";
 
 	public static string HEADING_FORMAT = "000";
+	public static string SPEED_FORMAT = "0000";
 	public static string ALTITUDE_FORMAT = "00000";
 
 }
