@@ -10,4 +10,9 @@
 	public static string SPEED_FORMAT = "0000";
 	public static string ALTITUDE_FORMAT = "00000";
 
+	public static string TAKE_OFF_SEQUENCE_1 = "INITIATING TAKE OFF SEQUENCE \n\nENGINES   /INIT \nWEAPONS /INIT";
+	public static string TAKE_OFF_SEQUENCE_2 = "\n\nENGINES   /OK \nWEAPONS /OK";
+	public static string TAKE_OFF_SEQUENCE_3 = "\n\nSYSTEMS NOMINAL";
+	public static string TAKE_OFF_SEQUENCE_4 = "\n\nLAUNCHING...";
+
 }
