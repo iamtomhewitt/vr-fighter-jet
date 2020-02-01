@@ -23,6 +23,7 @@ namespace UI
 		[SerializeField] private Text healthText;
 		[SerializeField] private Text takeoffText;
 		[SerializeField] private Text warningText;
+		[SerializeField] private Text statusText;
 
 		[SerializeField] private HudHeading heading;
 		[SerializeField] private HudAltitude altitude;
@@ -38,6 +39,7 @@ namespace UI
 		private void Start()
 		{
 			rb = GetComponent<Rigidbody>();
+			statusText.text = "";
 			ColourHUD(hudColour);
 		}
 
@@ -165,6 +167,11 @@ namespace UI
 			{
 				hudComponents[i].gameObject.SetActive(on);
 			}
+		}
+
+		public void SetStatusText(string text)
+		{
+			statusText.text = text;
 		}
 	}
 }
