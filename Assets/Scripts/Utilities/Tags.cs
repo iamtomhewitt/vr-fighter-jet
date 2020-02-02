@@ -10,6 +10,8 @@
 		public const string BULLETS = "Bullets";
 		public const string SMOKES = "Smokes";
 		public const string FIGHTER_JET = "Fighter Jet";
+		public const string AI_JET = "AI Jet";
+		public const string HOMING_MISSILE = "Homing Missile";
 
 	}
 }

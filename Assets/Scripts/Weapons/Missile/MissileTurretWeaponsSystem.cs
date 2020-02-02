@@ -1,30 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Weapons;
+﻿using UnityEngine;
 
-namespace MissileTurret
+namespace Weapons
 {
-public class MissileTurretWeaponsSystem : MonoBehaviour
-{
-	public GameObject homingMissile;
-	public Transform spawn;
-
-	MissileTurretTrackingSystem trackingSystem;
-
-	void Start()
+	public class MissileTurretWeaponsSystem : MonoBehaviour
 	{
-		trackingSystem = GetComponent<MissileTurretTrackingSystem>();
-		InvokeRepeating("Fire", 5f, 10f);
-	}
+		[SerializeField] private GameObject homingMissile;
+		[SerializeField] private Transform spawn;
+		[SerializeField] private float fireRate;
 
-	void Fire()
-	{
-        if (trackingSystem.lockedOn && trackingSystem.target != null)
-        {
-            GameObject g = Instantiate(homingMissile, spawn.position, spawn.transform.rotation) as GameObject;
-            g.GetComponent<HomingMissile>().SetTarget(trackingSystem.target.transform);
-        }
+		private MissileTurretTrackingSystem trackingSystem;
+
+		private void Start()
+		{
+			trackingSystem = GetComponent<MissileTurretTrackingSystem>();
+			InvokeRepeating("Fire", fireRate, fireRate);
+		}
+
+		private void Fire()
+		{
+			if (trackingSystem.IsLockedOn() && trackingSystem.GetTarget() != null)
+			{
+				Instantiate(homingMissile, spawn.position, spawn.transform.rotation).GetComponent<HomingMissile>().SetTarget(trackingSystem.GetTarget().transform);
+			}
+		}
 	}
-}
 }
