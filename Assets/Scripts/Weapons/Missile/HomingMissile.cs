@@ -90,8 +90,7 @@ namespace Weapons
 		private void PlayRandomLaunchSound()
 		{
 			int i = Random.Range(1, 4);
-			AudioManager.instance.AttachSoundTo("Weapon Homing Missile 1", this.gameObject);
-			GetComponent<AudioSource>().Play();
+			AudioManager.instance.AttachSoundTo(SoundNames.MISSILE_1, this.gameObject).Play();
 		}
 
 		private void OnCollisionEnter(Collision other)

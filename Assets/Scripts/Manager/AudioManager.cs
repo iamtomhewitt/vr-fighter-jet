@@ -1,18 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 public class AudioManager : MonoBehaviour 
 {
-    public Sound[] sounds;
+    [SerializeField] private Sound[] sounds;
 
     public static AudioManager instance;
 
-    void Awake()
+   private void Awake()
     {
         if (instance == null)
         {
@@ -40,31 +35,33 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
-        Play("Pilot Breathing");
-        Play("Radio Chatter");
+        Play(SoundNames.PILOT_BREATHING);
+        Play(SoundNames.RADIO);
     }
 
     public void Play(string name)
     {
         Sound s = GetSound(name);
 
-        if (s != null)
-            s.source.Play();
+		if (s != null)
+		{
+			s.source.Play();
+		}
     }
 
-    public void Pause(string name)
-    {
-        Sound s = GetSound(name);
+	public void Pause(string name)
+	{
+		Sound s = GetSound(name);
 
-        if (s != null) s.source.Pause();
-    }
-
-	/// <summary>
-	/// TODO - this should return the AudioSource
-	/// </summary>
-    public void AttachSoundTo(string soundName, GameObject g)
+		if (s != null)
+		{
+			s.source.Pause();
+		}
+	}
+	
+    public AudioSource AttachSoundTo(string soundName, GameObject g)
     {
         Sound s = GetSound(soundName);
 
@@ -77,6 +74,8 @@ public class AudioManager : MonoBehaviour
         s.source.rolloffMode = s.rollOffMode;
         s.source.minDistance = s.minDistance;
         s.source.maxDistance = s.maxDistance;
+
+		return s.source;
     }
 
     public Sound GetSound(string name)
