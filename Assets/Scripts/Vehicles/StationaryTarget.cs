@@ -1,10 +1,13 @@
-﻿/// <summary>
-/// A target that does not move.
-/// </summary>
-public class StationaryTarget : HealthSystem
+﻿namespace Vehicle
 {
-	public override void Die()
+	/// <summary>
+	/// A target that does not move.
+	/// </summary>
+	public class StationaryTarget : HealthSystem
 	{
-		return;
+		public override void Die()
+		{
+			return;
+		}
 	}
 }

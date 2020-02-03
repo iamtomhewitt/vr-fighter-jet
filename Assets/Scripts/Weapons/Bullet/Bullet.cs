@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Utilities;
+using Vehicle;
 
 namespace Weapons
 {

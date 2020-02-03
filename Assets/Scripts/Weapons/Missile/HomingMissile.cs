@@ -3,6 +3,7 @@ using System.Collections;
 using Player;
 using UI;
 using Utilities;
+using Vehicle;
 
 namespace Weapons
 {

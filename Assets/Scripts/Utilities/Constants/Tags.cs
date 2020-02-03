@@ -13,5 +13,6 @@
 		public const string AI_JET = "AI Jet";
 		public const string JETS = "Jets";
 		public const string HOMING_MISSILE = "Homing Missile";
+		public const string VR_FINGER = "VR Finger";
 	}
 }

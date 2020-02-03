@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using Utilities;
+using Vehicle;
 
 namespace Player
 {

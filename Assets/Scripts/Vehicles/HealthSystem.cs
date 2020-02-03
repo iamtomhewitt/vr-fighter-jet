@@ -1,29 +1,32 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// A health system that can be attached to any object that requires health that can be decreased.
-/// </summary>
-public abstract class HealthSystem : MonoBehaviour
+namespace Vehicle
 {
-	[SerializeField] private int health;
-	[SerializeField] private bool godMode;
-
 	/// <summary>
-	/// Removes health from the health variable.
+	/// A health system that can be attached to any object that requires health that can be decreased.
 	/// </summary>
-	public void RemoveHealth(int amount)
+	public abstract class HealthSystem : MonoBehaviour
 	{
-		if (godMode)
-			return;
+		[SerializeField] private int health;
+		[SerializeField] private bool godMode;
 
-		health -= amount;
-
-		if (health <= 0)
+		/// <summary>
+		/// Removes health from the health variable.
+		/// </summary>
+		public void RemoveHealth(int amount)
 		{
-			print(this.gameObject.name + " has died");
-			this.Die();
-		}
-	}
+			if (godMode)
+				return;
 
-	public abstract void Die();
+			health -= amount;
+
+			if (health <= 0)
+			{
+				print(this.gameObject.name + " has died");
+				this.Die();
+			}
+		}
+
+		public abstract void Die();
+	}
 }
