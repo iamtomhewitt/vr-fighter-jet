@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Utilities
 {
@@ -15,18 +13,15 @@ namespace Utilities
 	/// </summary>
 	public static class GazeRaycaster
 	{
+		public static float DISTANCE = 1000f;
+
 		/// <summary>
 		/// Returns the GameObject that we look at, 1000f forward.
 		/// </summary>
 		public static GameObject GetRaycastedGameObject()
 		{
-			RaycastHit hit;
-			Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 1000f, Color.blue);
-
-			if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 1000f))
-				return hit.collider.gameObject;
-			else
-				return null;
+			Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * DISTANCE, Color.blue);
+			return GetLookedAtObject(DISTANCE).gameObject;
 		}
 
 		/// <summary>
@@ -34,13 +29,8 @@ namespace Utilities
 		/// </summary>
 		public static string GetRaycastedTag()
 		{
-			RaycastHit hit;
-			Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 1000f, Color.blue);
-
-			if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 1000f))
-				return hit.collider.tag;
-			else
-				return null;
+			Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * DISTANCE, Color.blue);
+			return GetLookedAtObject(DISTANCE).tag;
 		}
 
 		/// <summary>
@@ -48,15 +38,9 @@ namespace Utilities
 		/// </summary>
 		public static string GetRaycastedName()
 		{
-			RaycastHit hit;
-			Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 1000f, Color.blue);
-
-			if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 1000f))
-				return hit.collider.name;
-			else
-				return null;
+			Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * DISTANCE, Color.blue);
+			return GetLookedAtObject(DISTANCE).name;
 		}
-
 
 		/// <summary>
 		/// Creates a Sphere Raycast of size 'radius' and of length 'distance'.
@@ -69,11 +53,14 @@ namespace Utilities
 			Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
 
 			if (Physics.SphereCast(ray, radius, out hit, distance))
+			{
 				return hit.collider.gameObject;
+			}
 			else
+			{
 				return null;
+			}
 		}
-
 
 		/// <summary>
 		/// Creates a Raycast of length 'rayDistance'.
@@ -86,11 +73,26 @@ namespace Utilities
 
 			if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, rayDistance))
 			{
-				//Debug.Log(hit.collider.name);
 				return hit.distance;
 			}
 			else
+			{
 				return 1f;
+			}
+		}
+
+		private static Collider GetLookedAtObject(float distance)
+		{
+			RaycastHit hit;
+
+			if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, distance))
+			{
+				return hit.collider;
+			}
+			else
+			{
+				return null;
+			}
 		}
 	}
 }

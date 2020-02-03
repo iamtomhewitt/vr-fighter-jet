@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Utilities
 {
-public class LookAt : MonoBehaviour 
-{
-    public Transform target;
+	public class LookAt : MonoBehaviour
+	{
+		[SerializeField] private Transform target;
 
-	void Update () 
-    {
-		transform.LookAt(2 * transform.position - target.position);
+		private void Update()
+		{
+			// Use value of 2 to make it not inverted
+			transform.LookAt(2 * transform.position - target.position);
+		}
 	}
-}
 }

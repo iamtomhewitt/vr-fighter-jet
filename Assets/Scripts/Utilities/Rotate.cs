@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
+
 namespace Utilities
 {
-public class Rotate : MonoBehaviour 
-{
-	public Vector3 speed;
-	
-	void Update()
+	public class Rotate : MonoBehaviour
 	{
-		transform.Rotate(speed);
+		[SerializeField] private Vector3 speed;
+
+		private void Update()
+		{
+			transform.Rotate(speed);
+		}
 	}
-}
 }
