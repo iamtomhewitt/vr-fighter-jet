@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using Weapons;
-using AIFighterJet;
+using Enemy;
 using Utilities;
 using UI;
 
@@ -145,7 +145,7 @@ namespace Player
 				// If its a lock on graphic
 				if (g.tag.Equals(Tags.LOCK_ON))
 				{
-					LockOnGraphic graphic = g.GetComponent<LockOnGraphic>();
+					EnemyLockOnUi graphic = g.GetComponent<EnemyLockOnUi>();
 					if (locked)
 					{
 						graphic.SetLockColour();

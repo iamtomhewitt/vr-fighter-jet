@@ -2,31 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AIFighterJet
+namespace Enemy
 {
-	public class LockOnGraphic : MonoBehaviour
+	/// <summary>
+	/// The lock on graphic present on each enemy that the player sees.
+	/// </summary>
+	public class EnemyLockOnUi : MonoBehaviour
 	{
-		public Color colour;
-		public Color lockedColour;
+		[SerializeField] private SpriteRenderer sprite;
+		[SerializeField] private Color colour;
+		[SerializeField] private Color lockedColour;
 
-		public float objectScale = 0.025f;
+		[SerializeField] private float objectScale = 0.025f;
 
-		public SpriteRenderer sprite;
-
-		private Vector3 initialScale;
 		private Camera cam;
+		private Vector3 initialScale;
 
-		void Start()
+		private void Start()
 		{
 			// Record initial scale, use this as a basis
 			initialScale = transform.localScale;
-
 			cam = Camera.main;
-
 			ResetLockColour();
 		}
 
-		void Update()
+		private void Update()
 		{
 			// Scale object relative to distance from camera plane
 			Plane plane = new Plane(cam.transform.forward, cam.transform.position);

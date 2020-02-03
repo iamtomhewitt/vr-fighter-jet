@@ -2,11 +2,11 @@
 using UnityEngine;
 using Vehicle;
 
-namespace AIFighterJet
+namespace Enemy
 {
-	public class AIJetCounterMeasuresSystem : CounterMeasuresSystem
+	public class EnemyCounterMeasures : CounterMeasuresSystem
 	{
-		[SerializeField] private LockOnGraphic lockOnGraphic;
+		[SerializeField] private EnemyLockOnUi lockOnGraphic;
 
 		private void Start()
 		{

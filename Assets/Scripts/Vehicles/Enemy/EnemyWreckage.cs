@@ -1,16 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace AIFighterJet
+namespace Enemy
 {
-	public class AIJetWreckage : MonoBehaviour
+	public class EnemyWreckage : MonoBehaviour
 	{
-		public float force;
-		public float torque;
+		[SerializeField] private Rigidbody[] parts;
+		[SerializeField] private ParticleSystem[] smokes;
 
-		public Rigidbody[] parts;
-		public ParticleSystem[] smokes;
+		[SerializeField] private float force;
+		[SerializeField] private float torque;
 
 		private void Start()
 		{

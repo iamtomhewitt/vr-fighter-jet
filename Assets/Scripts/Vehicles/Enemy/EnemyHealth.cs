@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
-using AIFighterJet;
+using Utilities;
 
-namespace AIFighterJet
+namespace Enemy
 {
-    public class AIJetHealthSystem : HealthSystem
+    public class EnemyHealth : HealthSystem
     {
-        public GameObject explosion;
-        public GameObject wreckage;
+        [SerializeField] private GameObject explosion;
+        [SerializeField] private GameObject wreckage;
 
 		public override void Die()
 		{
@@ -20,9 +19,9 @@ namespace AIFighterJet
 			Destroy(this.gameObject);
 		}
 
-		void OnCollisionEnter(Collision other)
+		private void OnCollisionEnter(Collision other)
         {
-            if (other.gameObject.tag.Equals("Environment"))
+            if (other.gameObject.tag.Equals(Tags.ENVIRONMENT))
             {
 				this.RemoveHealth(200);
             }

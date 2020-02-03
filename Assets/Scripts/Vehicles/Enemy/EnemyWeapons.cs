@@ -1,28 +1,26 @@
 ﻿using UnityEngine;
-using System.Collections;
+using Utilities;
 using Weapons;
 
-namespace AIFighterJet
+namespace Enemy
 {
-	public class AIJetWeaponsSystem : MonoBehaviour
+	public class EnemyWeapons : MonoBehaviour
 	{
-		public GameObject homingMissile;
+		[SerializeField] private GameObject homingMissile;
+		[SerializeField] private Transform spawn;
+		[SerializeField] private float lockOnDistance;
+		[SerializeField] private float lockOnRadius;
+
 		private GameObject target;
-
-		public Transform spawn;
-
-		public float lockOnDistance;
-		public float lockOnRadius;
-
 		private bool isInvoking = false;
 
-		void Start()
+		private void Start()
 		{
 			// Better than doing it every frame every second, do it over time
 			InvokeRepeating("HandleRaycastLockOn", 0f, .3f);
 		}
 
-		void HandleRaycastLockOn()
+		private void HandleRaycastLockOn()
 		{
 			// Cast a ray out from the transform position
 			RaycastHit hit;
@@ -33,7 +31,7 @@ namespace AIFighterJet
 
 			if (Physics.SphereCast(ray, lockOnRadius, out hit, lockOnDistance))
 			{
-				if (hit.collider.tag.Equals("Target"))
+				if (hit.collider.tag.Equals(Tags.TARGET))
 				{
 					print(this.gameObject.name + " has locked onto " + hit.collider.name + ", FIRING");
 					target = hit.collider.gameObject;
@@ -53,11 +51,10 @@ namespace AIFighterJet
 			}
 		}
 
-		void Fire()
+		private void Fire()
 		{
-			GameObject g = Instantiate(homingMissile, spawn.position, spawn.rotation) as GameObject;
-			g.GetComponent<HomingMissile>().SetTarget(target.transform);
-			print(this.gameObject.name + " has fired a missile at " + g.GetComponent<HomingMissile>().GetTarget().name);
+			Instantiate(homingMissile, spawn.position, spawn.rotation).GetComponent<HomingMissile>().SetTarget(target.transform);
+			print(gameObject.name + " has fired a missile at " + target.name);
 		}
 	}
 }
