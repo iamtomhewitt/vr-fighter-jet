@@ -1,28 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Utilities;
 
 public class GameManager : MonoBehaviour
 {
-	public FadeHelper fadeHelper;
-	public AudioManager audioManager;
-
-	[Space()]
-	public string[] transforms;
+	[SerializeField] private FadeHelper fadeHelper;
+	[SerializeField] private AudioManager audioManager;
+	[SerializeField] private string[] parentTransforms;
 
 	private void Awake()
 	{
-		if (GameObject.FindObjectOfType<FadeHelper>() == null)
+		if (FindObjectOfType<FadeHelper>() == null)
+		{
 			Instantiate(fadeHelper);
+		}
 
-		if (GameObject.FindObjectOfType<AudioManager>() == null)
+		if (FindObjectOfType<AudioManager>() == null)
+		{
 			Instantiate(audioManager);
+		}
 
-		foreach (string t in transforms)
+		foreach (string t in parentTransforms)
 		{
 			if (GameObject.Find(t) == null)
+			{
 				new GameObject(t);
+			}
 		}
 	}
 }
