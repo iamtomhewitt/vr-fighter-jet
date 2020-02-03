@@ -29,7 +29,7 @@ namespace UI
 		[SerializeField] private HudAltitude altitude;
 		[SerializeField] private PitchLadder pitchLadder;
 
-		[SerializeField] private Component[] hudComponents;
+		[SerializeField] private GameObject[] hudComponents;
 
 		private void Awake()
 		{
@@ -107,7 +107,7 @@ namespace UI
 		{
 			for (int i = 0; i < hudComponents.Length; i++)
 			{
-				Component c = hudComponents[i];
+				GameObject c = hudComponents[i];
 				Image image			= c.GetComponent<Image>();
 				Text text			= c.GetComponent<Text>();
 				Renderer renderer	= c.GetComponent<Renderer>();
