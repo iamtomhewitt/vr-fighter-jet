@@ -1,36 +1,36 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Vehicle;
 
 namespace AIFighterJet
 {
-public class AIJetCounterMeasuresSystem : MonoBehaviour 
-{
-    public GameObject countermeasure;
-    public LockOnGraphic lockOnGraphic;
-    public Transform spawn;
-    public int countermeasureCount;
-	public int repeatRate;
-	public float deploySpeed;
+	public class AIJetCounterMeasuresSystem : CounterMeasuresSystem
+	{
+		[SerializeField] private LockOnGraphic lockOnGraphic;
 
-	void Start () 
-    {
-		InvokeRepeating("FireCounterMeasure", 0f, Random.Range(10f, repeatRate));
+		private void Start()
+		{
+			InvokeRepeating("FireCounterMeasures", Random.Range(10f, counterMeasureDeploySpeed), Random.Range(10f, counterMeasureDeploySpeed));
+		}
+
+		public override IEnumerator SpawnCounterMeasures()
+		{
+			canUseCounterMeasures = false;
+
+			for (int i = 0; i <= amountOfCounterMeasures; i++)
+			{
+				GameObject c = Instantiate(counterMeasure, spawn.position, Quaternion.identity) as GameObject;
+				Destroy(c, 6f);
+				yield return new WaitForSeconds(counterMeasureDeploySpeed);
+			}
+
+			StartCoroutine(ReloadCounterMeasures());
+		}
+
+		public override IEnumerator ReloadCounterMeasures()
+		{
+			canUseCounterMeasures = true;
+			yield return null;
+		}
 	}
-
-    void FireCounterMeasure()
-    {
-        StartCoroutine(SpawnCountermeasure());
-    }
-	
-    IEnumerator SpawnCountermeasure()
-    {
-        for (int i = 0; i <= countermeasureCount; i++)
-        {
-            GameObject c = Instantiate(countermeasure, spawn.position, Quaternion.identity) as GameObject;
-            Destroy(c, 6f);
-            yield return new WaitForSeconds(deploySpeed);
-        }
-    }
-}
 }

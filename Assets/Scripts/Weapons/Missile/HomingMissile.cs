@@ -19,7 +19,7 @@ namespace Weapons
 		private GameObject smokeParent;
 		private Transform fighterJet;
 		private Rigidbody rb;
-		private CounterMeasuresSystem jetCounterMeasuresSystem;
+		private PlayerCounterMeasures jetCounterMeasuresSystem;
 		private Collider missileCollider;
 		private float fuseDelay;
 		private float speedMultiplier = 50f;
@@ -29,7 +29,7 @@ namespace Weapons
 			smokeParent = GameObject.Find(Tags.SMOKES);
 			fighterJet = GameObject.FindGameObjectWithTag(Tags.FIGHTER_JET).transform;
 
-			jetCounterMeasuresSystem = FindObjectOfType<CounterMeasuresSystem>();
+			jetCounterMeasuresSystem = FindObjectOfType<PlayerCounterMeasures>();
 
 			rb = GetComponent<Rigidbody>();
 			missileCollider = GetComponent<Collider>();
