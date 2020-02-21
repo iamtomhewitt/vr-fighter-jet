@@ -23,12 +23,13 @@ namespace Player
 
 			if (quickTakeOff)
 			{
-				AudioManager.instance.Play("Cockpit Beep");
-				AudioManager.instance.Play("Jet Engines");
+				AudioManager.instance.Play(SoundNames.COCKPIT_BEEP);
+				AudioManager.instance.Play(SoundNames.JET_ENGINES);
 			}
 			else
 			{
 				SetComponents(false);
+				InitiateTakeOffSequence();
 			}
 		}
 
@@ -52,19 +53,20 @@ namespace Player
 		private IEnumerator TakeOff()
 		{
 			Hud.instance.SetHud(false);
+			yield return new WaitForSeconds(3f);
 
-			AudioManager.instance.Play("Jet Startup");
+			AudioManager.instance.Play(SoundNames.JET_STARTUP);
 
 			yield return new WaitForSeconds(1f);
 
-			AudioManager.instance.Play("Cockpit Beep");
+			AudioManager.instance.Play(SoundNames.COCKPIT_BEEP);
 
 			Hud.instance.SetHud(true);
 
 			yield return new WaitForSeconds(8.5f);
 
-			AudioManager.instance.Play("Jet Engines");
-			AudioManager.instance.Play("Jet Engine Kick");
+			AudioManager.instance.Play(SoundNames.JET_ENGINES);
+			AudioManager.instance.Play(SoundNames.JET_ENGINE_KICK);
 
 			yield return Hud.instance.AnimateTakeOffText(HudConstants.TAKE_OFF_SEQUENCE_1);
 			yield return Hud.instance.AnimateTakeOffText(HudConstants.TAKE_OFF_SEQUENCE_2);
@@ -74,13 +76,13 @@ namespace Player
 
 			yield return Hud.instance.AnimateTakeOffText(HudConstants.TAKE_OFF_SEQUENCE_4);
 
-			AudioManager.instance.Play("Cockpit Takeoff Countdown");
+			AudioManager.instance.Play(SoundNames.COCKPIT_COUNTDOWN);
 
-			yield return new WaitForSeconds(AudioManager.instance.GetSound("Takeoff Countdown").clip.length);
+			yield return new WaitForSeconds(AudioManager.instance.GetSound(SoundNames.COCKPIT_COUNTDOWN).clip.length);
 
 			accelerationRate = 200;
 
-			AudioManager.instance.Play("Jet Takeoff Blast");
+			AudioManager.instance.Play(SoundNames.JET_SONIC_BOOM);
 
 			Hud.instance.SetTakeOffText("");
 

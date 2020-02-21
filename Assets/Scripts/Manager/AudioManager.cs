@@ -84,7 +84,7 @@ public class AudioManager : MonoBehaviour
 
         if (s == null)
         {
-            //print("Warning! Sound: '" + name + "'was not found.");
+            print("Warning! Sound: '" + name + "'was not found.");
             return null;
         }
         return s;

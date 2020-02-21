@@ -76,11 +76,11 @@ namespace Player
 			// Have to do the audio separate as cooldown was giving jittery effects
 			if ((Input.GetButton(ControllerConstants.XBOX_LB) || Input.GetButton("Fire1")))
 			{
-				AudioManager.instance.Play("Weapon Cannon");
+				AudioManager.instance.Play(SoundNames.CANNON);
 			}
 			else
 			{
-				AudioManager.instance.Pause("Weapon Cannon");
+				AudioManager.instance.Pause(SoundNames.CANNON);
 			}
 		}
 
