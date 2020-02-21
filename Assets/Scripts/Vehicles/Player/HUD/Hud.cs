@@ -12,10 +12,8 @@ namespace UI
 	{
 		public static Hud instance;
 
-		[SerializeField] private Color hudColour, warningColour;
-		private Rigidbody rb;
-		private bool active = false;				
-
+		[SerializeField] private Color hudColour;
+		[SerializeField] private Color warningColour;
 		[SerializeField] private Text flaresText;
 		[SerializeField] private Text targetInformationText;
 		[SerializeField] private Text speedText;
@@ -31,6 +29,9 @@ namespace UI
 
 		[SerializeField] private GameObject[] hudComponents;
 
+		private Rigidbody rb;
+		private bool active = false;
+		
 		private void Awake()
 		{
 			instance = this;
@@ -172,6 +173,16 @@ namespace UI
 		public void SetStatusText(string text)
 		{
 			statusText.text = text;
+		}
+
+		public void SetStatusTextColour(Color colour)
+		{
+			statusText.color = colour;
+		}
+
+		public void ResetStatusTextColour()
+		{
+			statusText.color = hudColour;
 		}
 	}
 }

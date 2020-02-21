@@ -17,6 +17,8 @@ namespace Manager
 			{
 				insideCombatArea = true;
 				StopCoroutine(Countdown());
+				Hud.instance.SetStatusText("");
+				Hud.instance.ResetStatusTextColour();
 			}
 		}
 
@@ -39,6 +41,7 @@ namespace Manager
 				}
 
 				Hud.instance.SetStatusText("RETURN TO COMBAT\n00:" + i.ToString("00"));
+				Hud.instance.SetStatusTextColour(Color.red);
 				yield return new WaitForSeconds(1f);
 
 				if (i == 0)

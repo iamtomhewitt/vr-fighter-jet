@@ -96,6 +96,8 @@ namespace Weapons
 
 		private void OnCollisionEnter(Collision other)
 		{
+			print("UNRECOGNISED COLLISION TAG: " + other.gameObject.tag);
+
 			switch (other.gameObject.tag)
 			{
 				case Tags.TARGET:
@@ -107,15 +109,20 @@ namespace Weapons
 					StartCoroutine(StopSmokeAndDestroy());
 					break;
 
+				case Tags.COMBAT_AREA:
+					break;
+
 				default:
-					print("UNRECOGNISED TAG: " + other.gameObject.tag);
+					print("UNRECOGNISED COLLISION TAG: " + other.gameObject.tag);
 					StartCoroutine(StopSmokeAndDestroy());
 					break;
 			}
 		}
 
-		void OnTriggerEnter(Collider other)
+		private void OnTriggerEnter(Collider other)
 		{
+			print("UNRECOGNISED TRIGGER TAG: " + other.gameObject.tag);
+
 			switch (other.tag)
 			{
 				case Tags.FLARE:
@@ -144,7 +151,7 @@ namespace Weapons
 					break;
 
 				default:
-					print("UNRECOGNISED TAG: " + other.gameObject.tag);
+					print("UNRECOGNISED TRIGGER TAG: " + other.gameObject.tag);
 					break;
 			}
 		}
