@@ -16,7 +16,7 @@ namespace Manager
 		private void Start()
 		{
 			InvokeRepeating("SpawnJet", spawnDelay, spawnRate);
-			InvokeRepeating("CountNumberOfJets", 0f, 0.2f);
+			InvokeRepeating("CountNumberOfJets", 0f, 2f);
 		}
 
 		private void CountNumberOfJets()

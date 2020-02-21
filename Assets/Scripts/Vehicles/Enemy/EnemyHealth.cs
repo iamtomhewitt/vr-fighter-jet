@@ -14,8 +14,8 @@ namespace Enemy
 			GameObject e = Instantiate(explosion, transform.position, Quaternion.identity) as GameObject;
 			Destroy(e, 15f);
 
-			//GameObject w = Instantiate(wreckage, transform.position, transform.rotation) as GameObject;
-			//w.GetComponent<AIJetWreckage>().ApplyForces(transform.forward);
+			GameObject w = Instantiate(wreckage, transform.position, transform.rotation) as GameObject;
+			w.GetComponent<EnemyWreckage>().ApplyForces(transform.forward);
 
 			Destroy(this.gameObject);
 		}
