@@ -24,7 +24,6 @@ namespace UI
 		[SerializeField] private Text statusText;
 
 		[SerializeField] private HudHeading heading;
-		[SerializeField] private HudAltitude altitude;
 		[SerializeField] private PitchLadder pitchLadder;
 
 		[SerializeField] private GameObject[] hudComponents;
@@ -50,10 +49,6 @@ namespace UI
 			pitchLadder.SetPitchOffset();
 			pitchLadder.UpdatePitchLadderMaterial();
 			pitchLadder.AlignWithHorizon(transform);
-
-			altitude.SetAltitudeOffset(transform);
-			altitude.UpdateAltitudeMaterial();
-			altitude.SetAltitudeText();
 
 			heading.SetDirection(transform);
 			heading.SetHeadingOffset();
