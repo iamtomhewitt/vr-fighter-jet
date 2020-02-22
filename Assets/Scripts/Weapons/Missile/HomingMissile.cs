@@ -13,7 +13,6 @@ namespace Weapons
 		[SerializeField] private Transform target;
 		[SerializeField] private GameObject missileModel;
 		[SerializeField] private GameObject trailSmoke;
-		[SerializeField] private ParticleSystem smoke;
 		[SerializeField] private float speed = 5f;
 		[SerializeField] private float turningSpeed;
 		
@@ -50,6 +49,8 @@ namespace Weapons
 				return;
 			}
 
+			HomeIn();
+
 			// If the target is the player, then update the hud text
 			if (target == fighterJet)
 			{
@@ -62,8 +63,6 @@ namespace Weapons
 					AudioManager.instance.Play("Cockpit Warning Lock");
 				}
 			}
-
-			HomeIn();
 		}
 
 		private IEnumerator DelayCollider()
@@ -167,21 +166,11 @@ namespace Weapons
 			}
 
 			target = null;
-			SetSmokeEmissionRate(0f);
-			smoke.transform.parent = smokeParent.transform;
 			trailSmoke.transform.parent = smokeParent.transform;
 			Destroy(trailSmoke, 7f);
 			Destroy(missileModel);
 			yield return new WaitForSeconds(.5f);
 			Destroy(this.gameObject);
-		}
-
-		private void SetSmokeEmissionRate(float emissionRate)
-		{
-			ParticleSystem.EmissionModule emission = smoke.emission;
-			ParticleSystem.MinMaxCurve rate = emission.rateOverTime;
-			rate.constantMax = emissionRate;
-			emission.rateOverTime = rate;
 		}
 
 		private IEnumerator DestroyAfterLifetime(float lifetime)
