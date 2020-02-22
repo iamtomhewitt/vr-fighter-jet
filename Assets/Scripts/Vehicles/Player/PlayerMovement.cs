@@ -7,9 +7,7 @@ namespace Player
 {
 	public class PlayerMovement : MonoBehaviour
 	{
-		[SerializeField] private Transform joystick;
 		[SerializeField] private Text speedText;
-		[SerializeField] private Text altitudeText;
 
 		[SerializeField] private float maxSpeed;
 		[SerializeField] private float minSpeed;
@@ -86,8 +84,6 @@ namespace Player
 
 			z = Input.GetAxis(ControllerConstants.HORIZONTAL) * -20;
 			z = Mathf.Clamp(z, -45f, 45f);
-
-			joystick.localEulerAngles = new Vector3(x, 0f, z);
 		}
 	}
 }
