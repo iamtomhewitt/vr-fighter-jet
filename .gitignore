@@ -4,6 +4,7 @@
 Temp/
 Library/
 
+
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
@@ -19,12 +20,6 @@ obj/
 *.unityproj
 *.booproj
 
-# ================= #
-# VS Code generated #
-# ================= #
-.vs/
-.vscode
-
 # ============ #
 # OS generated #
 # ============ #
@@ -35,14 +30,21 @@ obj/
 .Trashes
 ehthumbs.db
 Thumbs.db
+/Library/*
 
 # ============ #
-# Others	   #
+# Other        #
 # ============ #
-/Build
-/.vs/Fighter Jet Simulator/v15/Server/sqlite3/db.lock
-/.vs/Fighter Jet Simulator/v15/Server/sqlite3/storage.ide
-/.vs/Fighter Jet Simulator/v15/sqlite3/db.lock
-/.vs/Fighter Jet Simulator/v15/sqlite3/storage.ide
-/Packages
-/Logs
+Releases/
+Logs/
+.vs/
+/.vscode/settings.json
+/ProjectSettings/ProBuilderSettings.json
+/Assembly-CSharp.csproj
+/Assembly-CSharp-Editor.csproj
+/Google Play Store/Video/Video.mp4
+Assets/Resources/config.json
+Assets/Resources/config.json.meta
+node_modules
+/.env
+/UserSettings/EditorUserSettings.asset

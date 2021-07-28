@@ -1,0 +1,47 @@
+{
+    "name": "vr-fighter-jet",
+    "version": "1.0.0",
+    "description": "A VR module in my final year of university, that I improve and extend in my spare time.",
+    "scripts": {
+        "release": "github-releaser"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/iamtomhewitt/vr-fighter-jet.git",
+        "apiUrl": "https://api.github.com/repos/iamtomhewitt/vr-fighter-jet"
+    },
+    "keywords": [
+        "unity",
+        "unity3d",
+        "csharp",
+        "game",
+        "pacman"
+    ],
+    "author": "Tom Hewitt",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/iamtomhewitt/vr-fighter-jet/issues"
+    },
+    "homepage": "https://github.com/iamtomhewitt/vr-fighter-jet#readme",
+    "devDependencies": {
+        "@commitlint/cli": "^9.1.2",
+        "@commitlint/config-conventional": "^11.0.0",
+        "cz-conventional-changelog": "^2.1.0",
+        "dot-prop": "^6.0.1",
+        "husky": "^1.1.2",
+        "validate-commit-msg": "^2.14.0"
+    },
+    "husky": {
+        "hooks": {
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    },
+    "dependencies": {
+        "github-releaser": "1.5.1"
+    }
+}
